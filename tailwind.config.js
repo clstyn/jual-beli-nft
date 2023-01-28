@@ -6,6 +6,14 @@ module.exports = {
       fontFamily: {
         'poppins': 'Poppins',
       },
+      animation: {
+        shine: "shine 1s",
+      },
+      keyframes: {
+        shine: {
+          "100%": { left: "125%" },
+        },
+      }
     },
   },
   plugins: [],
