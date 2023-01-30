@@ -2565,7 +2565,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:^4.5.0":
+"@openzeppelin/contracts@npm:^4.8.1":
   version: 4.8.1
   resolution: "@openzeppelin/contracts@npm:4.8.1"
   checksum: 99acefde1ae42c2d935ec9b4ebd327e786c499a4ec76b9582eb9adb0ff94a77c48047332fba44fb97b82b5a46d80e74d3e5d8cf73d5defa7f746f2a67f070281
@@ -3002,7 +3002,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@truffle/hdwallet-provider@npm:^2.0.4":
+"@truffle/hdwallet-provider@npm:^2.1.5":
   version: 2.1.5
   resolution: "@truffle/hdwallet-provider@npm:2.1.5"
   dependencies:
@@ -7434,7 +7434,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.0.0":
+"dotenv@npm:^16.0.3":
   version: 16.0.3
   resolution: "dotenv@npm:16.0.3"
   checksum: afcf03f373d7a6d62c7e9afea6328e62851d627a4e73f2e12d0a8deae1cd375892004f3021883f8aec85932cd2834b091f568ced92b4774625b321db83b827f8
@@ -11621,9 +11621,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "jual-beli-nft@workspace:."
   dependencies:
-    "@openzeppelin/contracts": ^4.5.0
+    "@openzeppelin/contracts": ^4.8.1
     "@tailwindcss/forms": 0.4.0
-    "@truffle/hdwallet-provider": ^2.0.4
+    "@truffle/hdwallet-provider": ^2.1.5
     assert: ^2.0.0
     autoprefixer: 10.4.2
     babel-polyfill: ^6.26.0
@@ -11636,7 +11636,7 @@ __metadata:
     chai: ^4.3.6
     chai-as-promised: ^7.1.1
     crypto-browserify: ^3.12.0
-    dotenv: ^16.0.0
+    dotenv: ^16.0.3
     eslint-config-react-app: ^7.0.1
     https-browserify: ^1.0.0
     ipfs-http-client: ^59.0.0

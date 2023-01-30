@@ -1,4 +1,5 @@
 import GambarDummy from "../assets/dummy.jpg"
+import { setGlobalState } from "../store"
 
 export const ArtworkSec = () => {
     return(
@@ -31,7 +32,9 @@ const Card = ({nft}) => (
                 <small className="text-xs">Current Price</small>
                 <p className="text-sm font-semibold">0.34 ETH</p>
             </div>
-            <button className="shadow-lg shadow-black text-sm bg-pink-600 px-4 py-1 rounded-full hover:bg-red-600 ">View Details</button>
+            <button 
+                onClick={()=> setGlobalState('showModal', 'scale-100')}
+                className="shadow-lg shadow-black text-sm bg-pink-600 px-4 py-1 rounded-full hover:bg-red-600 ">View Details</button>
         </div>
     </div>
 )
