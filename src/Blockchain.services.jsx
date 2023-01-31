@@ -1,11 +1,12 @@
 import Web3 from 'web3'
 import { setGlobalState, getGlobalState, setAlert } from './store'
+import abi from './abis/PStoreNFT.json'
 
 const { ethereum } = window
 window.web3 = new Web3(ethereum)
 window.web3 = new Web3(window.web3.currentProvider)
 
-const getEtheriumContract = async () => {
+const getEthereumContract = async () => {
   const connectedAccount = getGlobalState('connectedAccount')
 
   if (connectedAccount) {
@@ -77,7 +78,7 @@ const getAllNFTs = async () => {
   try {
     if (!ethereum) return alert('Please install Metamask')
 
-    const contract = await getEtheriumContract()
+    const contract = await getEthereumContract()
     const nfts = await contract.methods.getAllNFTs().call()
     const transactions = await contract.methods.getAllTransactions().call()
 
@@ -91,7 +92,7 @@ const getAllNFTs = async () => {
 const mintNFT = async ({ title, description, metadataURI, price }) => {
   try {
     price = window.web3.utils.toWei(price.toString(), 'ether')
-    const contract = await getEtheriumContract()
+    const contract = await getEthereumContract()
     const account = getGlobalState('connectedAccount')
     const mintPrice = window.web3.utils.toWei('0.01', 'ether')
 
@@ -108,7 +109,7 @@ const mintNFT = async ({ title, description, metadataURI, price }) => {
 const buyNFT = async ({ id, cost }) => {
   try {
     cost = window.web3.utils.toWei(cost.toString(), 'ether')
-    const contract = await getEtheriumContract()
+    const contract = await getEthereumContract()
     const buyer = getGlobalState('connectedAccount')
 
     await contract.methods
@@ -124,7 +125,7 @@ const buyNFT = async ({ id, cost }) => {
 const updateNFT = async ({ id, cost }) => {
   try {
     cost = window.web3.utils.toWei(cost.toString(), 'ether')
-    const contract = await getEtheriumContract()
+    const contract = await getEthereumContract()
     const buyer = getGlobalState('connectedAccount')
 
     await contract.methods.changePrice(Number(id), cost).send({ from: buyer })

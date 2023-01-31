@@ -1,10 +1,28 @@
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
-import { setGlobalState, useGlobalState } from '../store'
+import { create } from 'ipfs-http-client'
+import { 
+    setGlobalState, 
+    useGlobalState,
+    setAlert,
+    setLoadingMsg } from '../store'
 import GambarDummy from '../assets/dummy.jpg'
 
+// const auth =
+//   'Basic ' + Buffer.from(
+//     ''+ ':' + '',
+//   ).toString('base64')
+
+// const client = create({
+//   host: 'ipfs.infura.io',
+//   port: 5001,
+//   protocol: 'https',
+//   headers: {
+//     authorization: auth,
+//   },
+// })
+
 export const CreateNFT = () => {
-    useGlobalState('modal')
     const [modal] = useGlobalState('modal')
     const [title, setTitle] = useState('')
     const [price, setPrice] = useState('')
@@ -12,13 +30,43 @@ export const CreateNFT = () => {
     const [fileUrl, setFileUrl] = useState('')
     const [imgBase64, setImgBase64] = useState(null)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         if (!title || !description || !price) return
-        console.log("Minted..")
 
-        resetForm()
+        setGlobalState('modal', 'scale-0')
+        setGlobalState('loading', {show: true, msg:'Uploading to IPFS...'})
+      
+        // try {
+        //     const created = await client.add(fileUrl)
+        //     const metadataURI = `https://ipfs.io/ipfs/${created.path}`
+        //     const nft = { title, price, description, metadataURI }
+
+        //     setLoadingMsg('Intializing transaction...')
+        //     setFileUrl(metadataURI)
+        //     await mintNFT(nft)
+
+        //     resetForm()
+        //     setAlert('Minting completed', 'green')
+        //     window.location.reload()
+            
+        // } catch (error) {
+        //     console.log('Error uploading file: ', error)
+        //     setAlert('Minting failed', 'red')
+        // }
+        closeModal()
+    }
+
+    const changeImage = async (e) => {
+        const reader = new FileReader()
+        if (e.target.files[0]) reader.readAsDataURL(e.target.files[0])
+    
+        reader.onload = (readerEvent) => {
+          const file = readerEvent.target.result
+          setImgBase64(file)
+          setFileUrl(e.target.files[0])
+        }
     }
 
     const resetForm = () => {
@@ -34,6 +82,7 @@ export const CreateNFT = () => {
         setGlobalState('modal', 'scale-0');
         resetForm();
     }
+
     return (
         <div className={`fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50 transform transition ${modal}`}>
             <div className="bg-indigo-700 shadow-xl shadow-pink-800 rounded-xl w-11/12 md:w-2/5 h-7/12 p-6">
