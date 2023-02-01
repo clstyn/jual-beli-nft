@@ -7,20 +7,23 @@ import {
     setAlert,
     setLoadingMsg } from '../store'
 import GambarDummy from '../assets/dummy.jpg'
+import { mintNFT } from '../Blockchain.services'
 
-// const auth =
-//   'Basic ' + Buffer.from(
-//     ''+ ':' + '',
-//   ).toString('base64')
+window.Buffer = window.Buffer || require("buffer").Buffer; 
 
-// const client = create({
-//   host: 'ipfs.infura.io',
-//   port: 5001,
-//   protocol: 'https',
-//   headers: {
-//     authorization: auth,
-//   },
-// })
+const auth =
+  'Basic ' + Buffer.from(
+    '2L5HXbr6JVeOApeVuUh7691frzo'+ ':' + 'b1be385f23feaa835b1eaced7836ebae',
+  ).toString('base64')
+
+const client = create({
+  host: 'ipfs.infura.io',
+  port: 5001,
+  protocol: 'https',
+  headers: {
+    authorization: auth,
+  },
+})
 
 export const CreateNFT = () => {
     const [modal] = useGlobalState('modal')
@@ -36,25 +39,25 @@ export const CreateNFT = () => {
         if (!title || !description || !price) return
 
         setGlobalState('modal', 'scale-0')
-        setGlobalState('loading', {show: true, msg:'Uploading to IPFS...'})
-      
-        // try {
-        //     const created = await client.add(fileUrl)
-        //     const metadataURI = `https://ipfs.io/ipfs/${created.path}`
-        //     const nft = { title, price, description, metadataURI }
+        setLoadingMsg('Uploading to IPFS')
 
-        //     setLoadingMsg('Intializing transaction...')
-        //     setFileUrl(metadataURI)
-        //     await mintNFT(nft)
+        try {
+            const created = await client.add(fileUrl)
+            const metadataURI = `https://ipfs.io/ipfs/${created.path}`
+            const nft = { title, price, description, metadataURI }
 
-        //     resetForm()
-        //     setAlert('Minting completed', 'green')
-        //     window.location.reload()
+            setLoadingMsg('Intializing transaction...')
+            setFileUrl(metadataURI)
+            await mintNFT(nft)
+
+            closeModal()
+            setAlert('Minting completed', 'green')
+            window.location.reload()
             
-        // } catch (error) {
-        //     console.log('Error uploading file: ', error)
-        //     setAlert('Minting failed', 'red')
-        // }
+        } catch (error) {
+            console.log('Error uploading file: ', error)
+            setAlert('Minting failed', 'red')
+        }
         closeModal()
     }
 
@@ -78,9 +81,8 @@ export const CreateNFT = () => {
     }
 
     const closeModal = () => {
-        
-        setGlobalState('modal', 'scale-0');
         resetForm();
+        setGlobalState('modal', 'scale-0');
     }
 
     return (
@@ -109,7 +111,7 @@ export const CreateNFT = () => {
                             className='block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold hover:file:bg-pink-700 
                             hover:file:text-white  cursor-pointer focus:ring-0 transition-all' 
                             required
-                            // onChange={changeImage}
+                            onChange={changeImage}
                             />
                         </label>
                     </div>
