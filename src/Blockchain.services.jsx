@@ -35,7 +35,7 @@ const connectWallet = async () => {
   }
 }
 
-const isWallectConnected = async () => {
+const isWalletConnected = async () => {
   try {
     if (!ethereum) return alert('Please install Metamask')
     const accounts = await ethereum.request({ method: 'eth_accounts' })
@@ -46,7 +46,7 @@ const isWallectConnected = async () => {
 
     window.ethereum.on('accountsChanged', async () => {
       setGlobalState('connectedAccount', accounts[0].toLowerCase())
-      await isWallectConnected()
+      await isWalletConnected()
     })
 
     if (accounts.length) {
@@ -145,5 +145,5 @@ export {
   mintNFT,
   buyNFT,
   updateNFT,
-  isWallectConnected,
+  isWalletConnected,
 }

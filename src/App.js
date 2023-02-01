@@ -8,13 +8,18 @@ import { ShowNFT } from "./components/ShowNFT";
 import { UpdateNFT } from "./components/UpdateNFT";
 import { Loading } from "./components/Loading";
 import { Alert } from "./components/Alert";
-import { isWallectConnected } from "./Blockchain.services";
+import { getAllNFTs, isWalletConnected } from "./Blockchain.services";
 
 function App() {
+
   useEffect(() => {
-    async () => {
-      await isWallectConnected()
+
+    const initial = async () => {
+      await isWalletConnected()
+      await getAllNFTs()
     } 
+    
+    initial().catch(console.error)
   }, [])
   
   return (
