@@ -48,7 +48,7 @@ export const ShowNFT = () => {
                     </div>
 
                     <div className='flex items-center justify-center rounded-xl mt-5'>
-                        <div className='shrink-0 rounded-xl overflow-hidden h-20 w-20 '>
+                        <div className='shrink-0 rounded-xl overflow-hidden h-64 w-64 '>
                             <img className="h-full w-full object-cover cursor-pointer" 
                             src={nft?.metadataURI} 
                             alt={nft?.title} />

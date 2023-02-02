@@ -13,7 +13,7 @@ window.Buffer = window.Buffer || require("buffer").Buffer;
 
 const auth =
   'Basic ' + Buffer.from(
-    process.env.INFURA_PID + ':' + process.env_INFURA_API,
+    '2L5HXbr6JVeOApeVuUh7691frzo' + ':' + 'b1be385f23feaa835b1eaced7836ebae',
   ).toString('base64')
 
 const client = create({

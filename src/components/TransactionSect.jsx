@@ -20,7 +20,9 @@ export const TransactionSec = () => {
       
     return(
         <div className="min-h-screen ">
-            <h1 className="font-poppins text-white font-bold text-[18px] md:text-[36px] 2xl:text-[48px]">LATEST TRANSACTIONS</h1>
+            <h1 className="font-poppins text-white font-bold text-[18px] md:text-[36px] 2xl:text-[48px]">
+                {collection.length > 0 ? 'LATEST TRANSACTIONS': 'NO TRANSACTIONS YET'}
+            </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 lg:gap-2 py-2.5">
                 {collection.map((tx, i) => (
@@ -45,10 +47,11 @@ export const TransactionSec = () => {
                 ))}
             </div>
 
-            
-            <div className="text-center mb-5">
+            {collection.length > 0 && transactions.length > collection.length ? (<div className="text-center mb-5">
                 <button className="shadow-lg shadow-black bg-pink-500 hover:bg-pink-800 rounded-full text-white font-bold px-2 py-1 max-md:text-sm ">Load More</button>
-            </div>
+            </div>) : null
+            }
+            
             
         </div>
     )

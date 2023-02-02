@@ -1,10 +1,26 @@
+import React, { useState, useEffect } from 'react'
 import { getGlobalState, setGlobalState, useGlobalState } from "../store"
 
 export const ArtworkSec = () => {
     const [nfts] = useGlobalState('nfts')
+    const [end, setEnd] = useState(4)
+    const [count] = useState(4)
+    const [collection, setCollection] = useState([])
+
+    const getCollection = () => {
+        return nfts.slice(0, end)
+    }
+
+    useEffect(() => {
+      setCollection(getCollection())
+    }, [])
+    
+
     return(
         <div className="min-h-screen">
-            <h1 className="font-poppins text-white font-bold text-[18px] md:text-[36px] 2xl:text-[48px]">LATEST ARTWORKS</h1>
+            <h1 className="font-poppins text-white font-bold text-[18px] md:text-[36px] 2xl:text-[48px]">
+                {nfts.length > 0 ? 'LATEST ARTWORKS' : 'NO ARTWORKS YET'}
+            </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-4 lg:gap-3 py-2.5 text-white">
                 {nfts.map((nft, i) => (
@@ -12,9 +28,13 @@ export const ArtworkSec = () => {
                     ))}
             </div>
             
-            <div className="text-center mb-5">
-                <button className="shadow-lg shadow-black bg-pink-500 hover:bg-pink-800 rounded-full text-white font-bold px-2 py-1 max-md:text-sm ">Load More</button>
-            </div>
+            {collection.length > 0 && nfts.length > collection.length ? (
+                <div className="text-center mb-5">
+                    <button 
+                    onClick={() => setEnd(end+count)}
+                    className="shadow-lg shadow-black bg-pink-500 hover:bg-pink-800 rounded-full text-white font-bold px-2 py-1 max-md:text-sm ">Load More</button>
+                </div>
+            ) : null }
             
         </div>
     )
