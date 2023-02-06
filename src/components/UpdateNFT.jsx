@@ -23,6 +23,7 @@ export const UpdateNFT = () => {
 
             await updateNFT({id: nft.id, cost: price})
             setAlert('Price updated')
+            window.location.reload()
         } catch (error) {
             console.log('Error updating price: ', error)
             setAlert('Update failed', 'red')
@@ -43,7 +44,7 @@ export const UpdateNFT = () => {
             <div className="bg-indigo-700 shadow-xl shadow-pink-800 rounded-xl w-11/12 md:w-2/5 h-7/12 p-6">
                 <form action="" className="flex flex-col">
                     <div className="flex justify-between">
-                        <p className="font-semibold text-white">Candy NFT</p>
+                        <p className="font-semibold text-white">{nft?.title}</p>
                         <button type="button" className="border-0 bg-transparent focus:outline-none text-white" onClick={closeModal}>
                             <FaTimes/>
                         </button>
@@ -51,7 +52,7 @@ export const UpdateNFT = () => {
 
                     <div className='flex items-center justify-center rounded-xl mt-5'>
                         <div className='shrink-0 rounded-xl overflow-hidden h-20 w-20 '>
-                            <img className="h-full w-full object-cover cursor-pointer" src={GambarDummy} alt="NFT" />
+                            <img className="h-full w-full object-cover cursor-pointer" src={nft?.metadataURI} alt="NFT" />
                         </div>
                     </div>
 
@@ -64,7 +65,7 @@ export const UpdateNFT = () => {
                         step={0.01}
                         min={0.01}
                         name="price"
-                        placeholder="Price (Eth)"
+                        placeholder={nft?.cost}
                         onChange={(e) => setPrice(e.target.value)}
                         value={price}
                         required

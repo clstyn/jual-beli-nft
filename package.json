@@ -33,6 +33,7 @@
     ]
   },
   "devDependencies": {
+    "@headlessui/react": "^1.7.9",
     "@openzeppelin/contracts": "^4.8.1",
     "@tailwindcss/forms": "0.4.0",
     "@truffle/hdwallet-provider": "^2.1.5",

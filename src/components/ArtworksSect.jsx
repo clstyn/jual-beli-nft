@@ -7,23 +7,19 @@ export const ArtworkSec = () => {
     const [count] = useState(4)
     const [collection, setCollection] = useState([])
 
-    const getCollection = () => {
-        return nfts.slice(0, end)
-    }
-
     useEffect(() => {
-      setCollection(getCollection())
-    }, [])
+      setCollection(nfts.slice(0, end))
+    }, [nfts, end])
     
 
     return(
-        <div className="min-h-screen">
+        <div className="min-h-screen" id="artworks">
             <h1 className="font-poppins text-white font-bold text-[18px] md:text-[36px] 2xl:text-[48px]">
                 {nfts.length > 0 ? 'LATEST ARTWORKS' : 'NO ARTWORKS YET'}
             </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-4 lg:gap-3 py-2.5 text-white">
-                {nfts.map((nft, i) => (
+                {collection.map((nft, i) => (
                         <Card key={i} nft={nft}>Card Component</Card>
                     ))}
             </div>
@@ -32,7 +28,7 @@ export const ArtworkSec = () => {
                 <div className="text-center mb-5">
                     <button 
                     onClick={() => setEnd(end+count)}
-                    className="shadow-lg shadow-black bg-pink-500 hover:bg-pink-800 rounded-full text-white font-bold px-2 py-1 max-md:text-sm ">Load More</button>
+                    className="shadow-lg shadow-black bg-pink-500 hover:bg-pink-800 rounded-full text-white font-bold px-2 py-1 max-md:text-sm mt-4">Load More</button>
                 </div>
             ) : null }
             

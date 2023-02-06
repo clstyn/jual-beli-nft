@@ -8,6 +8,7 @@ import { ShowNFT } from "./components/ShowNFT";
 import { UpdateNFT } from "./components/UpdateNFT";
 import { Loading } from "./components/Loading";
 import { Alert } from "./components/Alert";
+import { About } from "./components/About";
 import { getAllNFTs, isWalletConnected } from "./Blockchain.services";
 
 function App() {
@@ -23,10 +24,12 @@ function App() {
   }, [])
   
   return (
-    <div className="flex items-center justify-center bg-gradient-to-br from-[#001F54] via-[#034078] to-[#1282A2] px-[24px] md:px-[72px] xl:px-[172px] font-poppins">
-      <div className="max-w-[1920px]">
-        <Navbar/>
+    <div className="bg-gradient-to-br from-[#001F54] via-[#034078] to-[#1282A2] font-poppins">
+      <Navbar/>
+      <div className="max-w-[1920px] px-[24px] md:px-[72px] xl:px-[172px] ">
+        
         <Hero/>
+        <About/>
         <ArtworkSec/>
         <TransactionSec/>
         <CreateNFT/>

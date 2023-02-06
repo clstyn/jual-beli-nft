@@ -53,10 +53,11 @@ const isWalletConnected = async () => {
       setGlobalState('connectedAccount', accounts[0].toLowerCase())
     } else {
       alert('Please connect wallet.')
-      console.log('No accounts found.')
+      return
     }
   } catch (error) {
     reportError(error)
+    return
   }
 }
 

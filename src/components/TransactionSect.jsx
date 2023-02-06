@@ -19,7 +19,7 @@ export const TransactionSec = () => {
 
       
     return(
-        <div className="min-h-screen ">
+        <div className="min-h-screen mt-12 md:mt-24">
             <h1 className="font-poppins text-white font-bold text-[18px] md:text-[36px] 2xl:text-[48px]">
                 {collection.length > 0 ? 'LATEST TRANSACTIONS': 'NO TRANSACTIONS YET'}
             </h1>
@@ -48,7 +48,7 @@ export const TransactionSec = () => {
             </div>
 
             {collection.length > 0 && transactions.length > collection.length ? (<div className="text-center mb-5">
-                <button className="shadow-lg shadow-black bg-pink-500 hover:bg-pink-800 rounded-full text-white font-bold px-2 py-1 max-md:text-sm ">Load More</button>
+                <button onClick={() => setEnd(end+count)} className="shadow-lg shadow-black bg-pink-500 hover:bg-pink-800 rounded-full text-white font-bold px-2 py-1 max-md:text-sm mt-4">Load More</button>
             </div>) : null
             }
             
