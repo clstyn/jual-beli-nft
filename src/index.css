@@ -53,3 +53,13 @@ root {
     transform: rotate(360deg);
   }
 }
+
+@media screen and (max-width: 280px) {
+  .lds-dual-ring:after{
+    width: 32px;
+    height: 32px;
+    border: 3px solid #fff;
+    border-color: #fff transparent #fff transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+  }
+}
