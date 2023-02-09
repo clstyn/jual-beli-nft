@@ -9,6 +9,7 @@ import { UpdateNFT } from "./components/UpdateNFT";
 import { Loading } from "./components/Loading";
 import { Alert } from "./components/Alert";
 import { About } from "./components/About";
+import { Community } from "./components/Community";
 import { getAllNFTs, isWalletConnected } from "./Blockchain.services";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <About/>
         <ArtworkSec/>
         <TransactionSec/>
+        <Community/>
         <CreateNFT/>
         <ShowNFT/>
         <UpdateNFT/>

@@ -15,6 +15,14 @@ export const Navbar = () => {
     const scrollToArt = () => {
         document.getElementById("artworks").scrollIntoView({behavior: "smooth"})
     }
+
+    const scrollToTx = () => {
+        document.getElementById("transactions").scrollIntoView({behavior: "smooth"})
+    }
+
+    const scrollToCon = () => {
+        document.getElementById("community").scrollIntoView({behavior: "smooth"})
+    }
    
     return(
         <>
@@ -34,20 +42,9 @@ export const Navbar = () => {
                 <li className="cursor-pointer ">
                     <button 
                     className="hover:font-bold "
-                    onClick={() => setAlert('This section is under construction', 'red')}>Community</button>
+                    onClick={scrollToTx}>Community</button>
                 </li>
             </ul>
-
-            {/* {!connectedAccount ? (
-                <button onClick={connectWallet} className="group shadow-lg md:shadow-xl shadow-black ml-8 rounded-[16px] bg-gradient-to-br from-[#00A6A6] to-[#F08700] px-2 py-1 cursor-pointer font-bold">
-                    Connect Wallet
-                </button>
-            ) : (
-                <div className="group shadow-lg md:shadow-xl font-bold shadow-black ml-8 rounded-[16px] bg-gradient-to-br from-[#00A6A6] to-[#F08700] px-2 py-1">
-                    {truncate(connectedAccount,4,4,11)}
-                </div>
-            )} */}
-
 
             {!connectedAccount ? (
                 <button onClick={connectWallet} className="group shadow-lg md:shadow-xl shadow-black ml-8 rounded-[16px] bg-gradient-to-br from-[#00A6A6] to-[#F08700] px-2 py-1 cursor-pointer font-bold">
@@ -95,7 +92,17 @@ export const Navbar = () => {
                                         {({ active }) => (
                                             <button
                                             className={`${active && 'bg-blue-500'}`}
-                                            onClick={()=> setAlert('This section is under construction', 'red')}
+                                            onClick={scrollToTx}
+                                            >
+                                            Transactions
+                                            </button>
+                                        )}
+                                    </Menu.Item>
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <button
+                                            className={`${active && 'bg-blue-500'}`}
+                                            onClick={scrollToCon}
                                             >
                                             Community
                                             </button>
