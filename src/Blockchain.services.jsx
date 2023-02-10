@@ -56,8 +56,7 @@ const isWalletConnected = async () => {
       return
     }
   } catch (error) {
-    reportError(error)
-    return
+    setAlert("Please connect Metamask", "red")
   }
 }
 
@@ -86,7 +85,7 @@ const getAllNFTs = async () => {
     setGlobalState('nfts', structuredNfts(nfts))
     setGlobalState('transactions', structuredNfts(transactions))
   } catch (error) {
-    reportError(error)
+    setAlert("Please connect Metamask", "red")
   }
 }
 

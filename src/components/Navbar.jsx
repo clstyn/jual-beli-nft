@@ -26,7 +26,7 @@ export const Navbar = () => {
    
     return(
         <>
-        <div className="h-16 flex w-full items-center justify-between font-[24px] text-white px-8 backdrop-blur-lg sticky top-0">
+        <div className="z-50 h-16 flex w-full items-center justify-between font-[24px] text-white px-8 backdrop-blur-lg sticky top-0">
             <div className="cursor-pointer font-bold ">PStore</div>
             <ul className="hidden md:flex items-center ml-12 gap-4 ">
                 <li className="cursor-pointer ">
