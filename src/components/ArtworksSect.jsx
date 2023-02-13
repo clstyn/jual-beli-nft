@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { getGlobalState, setGlobalState, useGlobalState } from "../store"
 
 export const ArtworkSec = () => {
+    const account = getGlobalState('connectedAccount')
     const [nfts] = useGlobalState('nfts')
+    const [filter, setFilter] = useState(false)
     const [end, setEnd] = useState(4)
     const [count] = useState(4)
     const [collection, setCollection] = useState([])
@@ -10,13 +12,34 @@ export const ArtworkSec = () => {
     useEffect(() => {
       setCollection(nfts.slice(0, end))
     }, [nfts, end])
-    
 
+    const seeOwned = () => {
+        const filtered = nfts.filter((item) => {
+            return item.owner === account
+        })
+        setCollection(filtered)
+    }
+
+    const seeAll = () => {
+        setCollection(nfts.slice(0, end))
+    }
+    
     return(
         <div className="min-h-screen" id="artworks">
             <h1 className="font-poppins text-white font-bold text-[18px] md:text-[36px] 2xl:text-[48px]">
                 {nfts.length > 0 ? 'LATEST ARTWORKS' : 'NO ARTWORKS YET'}
             </h1>
+
+            <div className='flex gap-8'>
+                <label className='text-white font-poppins text-2xl'>
+                    <input type="radio" name="owned" id="0" className='mr-4 scale-[2]' onChange={()=>seeAll()} />
+                    All
+                </label>
+                <label className='text-white font-poppins text-2xl'>
+                    <input type="radio" name="owned" id="1" className='mr-4 scale-[2]' onChange={()=>seeOwned()}/>
+                    Owned
+                </label>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-4 lg:gap-3 py-2.5 text-white">
                 {collection.map((nft, i) => (
