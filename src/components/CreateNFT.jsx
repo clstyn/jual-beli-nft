@@ -29,6 +29,7 @@ export const CreateNFT = () => {
     const [modal] = useGlobalState('modal')
     const [title, setTitle] = useState('')
     const [price, setPrice] = useState('')
+    const [royaltyPercent, setRoyaltyPercent] = useState('')
     const [description, setDescription] = useState('')
     const [fileUrl, setFileUrl] = useState('')
     const [imgBase64, setImgBase64] = useState(null)
@@ -36,15 +37,16 @@ export const CreateNFT = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if (!title || !description || !price) return
+        if (!title || !description || !price || !royaltyPercent) return
 
         setGlobalState('modal', 'scale-0')
         setLoadingMsg('Uploading to IPFS')
 
         try {
+            const royalty = parseInt(royaltyPercent)
             const created = await client.add(fileUrl)
             const metadataURI = `https://ipfs.io/ipfs/${created.path}`
-            const nft = { title, price, description, metadataURI }
+            const nft = { title, price, description, metadataURI, royalty }
 
             setLoadingMsg('Intializing transaction...')
             setFileUrl(metadataURI)
@@ -76,6 +78,7 @@ export const CreateNFT = () => {
         setTitle('')
         setDescription('')
         setPrice('')
+        setRoyaltyPercent('')
         setImgBase64(null)
         setFileUrl('')
     }
@@ -142,6 +145,22 @@ export const CreateNFT = () => {
                         placeholder="Price (Eth)"
                         onChange={(e) => setPrice(e.target.value)}
                         value={price}
+                        required
+                        />
+                    </div>
+
+                    <div className="flex flex-row justify-between items-center bg-gray-800 rounded-md mt-5 ">
+                        <input
+                        className="block w-full text-sm
+                            text-slate-500 bg-transparent border-0
+                            focus:outline-none focus:ring-0 pl-4 py-2"
+                        type="number"
+                        step={1}
+                        min={0}
+                        name="royalty"
+                        placeholder="Royalty (%)"
+                        onChange={(e) => setRoyaltyPercent(e.target.value)}
+                        value={royaltyPercent}
                         required
                         />
                     </div>

@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 import { setGlobalState, getGlobalState, setAlert } from './store'
-import abi from './abis/PStoreNFT.json'
+import abi from './abis/PStoreNFTv2.json'
 
 const { ethereum } = window
 window.web3 = new Web3(ethereum)
@@ -66,7 +66,9 @@ const structuredNfts = (nfts) => {
     .map((nft) => ({
       id: Number(nft.id),
       owner: nft.owner.toLowerCase(),
+      creator: nft.creator.toLowerCase(),
       cost: window.web3.utils.fromWei(nft.cost),
+      royaltyPercent: nft.royaltyPercent,
       title: nft.title,
       description: nft.description,
       metadataURI: nft.metadataURI,
@@ -90,7 +92,7 @@ const getAllNFTs = async () => {
   }
 }
 
-const mintNFT = async ({ title, description, metadataURI, price }) => {
+const mintNFT = async ({ title, description, metadataURI, price, royalty }) => {
   try {
     price = window.web3.utils.toWei(price.toString(), 'ether')
     const contract = await getEthereumContract()
@@ -98,7 +100,7 @@ const mintNFT = async ({ title, description, metadataURI, price }) => {
     const mintPrice = window.web3.utils.toWei('0.01', 'ether')
 
     await contract.methods
-      .payToMint(title, description, metadataURI, price)
+      .payToMint(title, description, metadataURI, price, royalty)
       .send({ from: account, value: mintPrice })
 
     return true
