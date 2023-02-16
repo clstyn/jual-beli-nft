@@ -71,6 +71,16 @@ contract('PStoreNFTv2', ([deployer, buyer1]) => {
         result = await contract.getNFT(1)
         result.length.toString().should.equal('9')
       })
+
+      it('Has the entered royalty percentage', async () => {
+        result = await contract.getNFT(1)
+        result.royaltyPercent.should.equal(ROYALTY_PERCENT.toString())
+      })
+
+      it('Makes the minter the royalty receiver', async () => {
+        result = await contract.getNFT(1)
+        result.creator.should.equal(buyer1)
+      })
     })
 
     describe('Failure', () => {
