@@ -31,12 +31,12 @@ export const ArtworkSec = () => {
             </h1>
 
             <div className='flex gap-8'>
-                <label className='text-white font-poppins text-2xl'>
-                    <input type="radio" name="owned" id="0" className='mr-4 scale-[2]' onChange={()=>seeAll()} />
+                <label className='text-white font-poppins text-lg md:text-2xl'>
+                    <input type="radio" name="owned" id="0" className='mr-2 md:mr-4 md:scale-[2]' onChange={()=>seeAll()} />
                     All
                 </label>
-                <label className='text-white font-poppins text-2xl'>
-                    <input type="radio" name="owned" id="1" className='mr-4 scale-[2]' onChange={()=>seeOwned()}/>
+                <label className='text-white font-poppins text-lg md:text-2xl'>
+                    <input type="radio" name="owned" id="1" className='mr-2 md:mr-4 md:scale-[2]' onChange={()=>seeOwned()}/>
                     Owned
                 </label>
             </div>

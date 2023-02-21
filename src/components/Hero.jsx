@@ -10,7 +10,7 @@ export const Hero = () => {
   return(
     <div className="relative flex flex-col md:flex-row  items-center justify-center md:justify-between gap-16 min-h-screen">
         {/* ornamen */}
-        <motion.div className="grid grid-cols-3 grid-rows-3 h-16 w-16 gap-4 absolute top-0 left-[28px]"
+        <motion.div className="grid grid-cols-3 grid-rows-3 h-8 w-8 md:h-16 md:w-16 gap-2 md:gap-4 absolute top-0 left-[28px]"
         animate={{x: [null, 100, 0]}}
         transition={{ duration: 3, repeat: Infinity }}>
           <div className="h-full w-full bg-rose-500"></div>
@@ -23,7 +23,7 @@ export const Hero = () => {
           <div className="h-full w-full bg-rose-500"></div>
           <div className="h-full w-full bg-rose-500"></div>
         </motion.div>
-        <motion.div className="grid grid-cols-3 grid-rows-3 h-16 w-16 gap-4 absolute top-24 left-0"
+        <motion.div className="grid grid-cols-3 grid-rows-3 h-8 w-8 md:h-16 md:w-16 gap-2 md:gap-4 absolute top-12 md:top-24 left-0"
         animate={{x: [100, 0, 100]}}
         transition={{ duration: 3, repeat: Infinity }}>
           <div className="h-full w-full bg-orange-500"></div>
