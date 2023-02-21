@@ -4,7 +4,6 @@ import { getGlobalState, setGlobalState, useGlobalState } from "../store"
 export const ArtworkSec = () => {
     const account = getGlobalState('connectedAccount')
     const [nfts] = useGlobalState('nfts')
-    const [filter, setFilter] = useState(false)
     const [end, setEnd] = useState(4)
     const [count] = useState(4)
     const [collection, setCollection] = useState([])
@@ -23,6 +22,13 @@ export const ArtworkSec = () => {
     const seeAll = () => {
         setCollection(nfts.slice(0, end))
     }
+
+    const searchAssets = (e) => {
+        const filtered = nfts.filter((item) => {
+            return item.title.toLowerCase().includes(e.target.value)
+        })
+        setCollection(filtered)
+    }
     
     return(
         <div className="min-h-screen" id="artworks">
@@ -30,16 +36,26 @@ export const ArtworkSec = () => {
                 {nfts.length > 0 ? 'LATEST ARTWORKS' : 'NO ARTWORKS YET'}
             </h1>
 
-            <div className='flex gap-8'>
-                <label className='text-white font-poppins text-lg md:text-2xl'>
-                    <input type="radio" name="owned" id="0" className='mr-2 md:mr-4 md:scale-[2]' onChange={()=>seeAll()} />
-                    All
-                </label>
-                <label className='text-white font-poppins text-lg md:text-2xl'>
-                    <input type="radio" name="owned" id="1" className='mr-2 md:mr-4 md:scale-[2]' onChange={()=>seeOwned()}/>
-                    Owned
-                </label>
+            <div className="w-full flex justify-between">
+                <div className='flex gap-8'>
+                    <label className='text-white font-poppins text-lg md:text-2xl'>
+                        <input type="radio" name="owned" id="0" className='mr-2 md:mr-4 md:scale-[2]' onChange={()=>seeAll()} />
+                        All
+                    </label>
+                    <label className='text-white font-poppins text-lg md:text-2xl'>
+                        <input type="radio" name="owned" id="1" className='mr-2 md:mr-4 md:scale-[2]' onChange={()=>seeOwned()}/>
+                        Owned
+                    </label>
+                </div>
+                <div className='w-1/4'>
+                    <input 
+                    type="text"
+                    className="border-none rounded-md text-md pl-4 py-1" 
+                    placeholder="Search assets title"
+                    onChange={searchAssets}/>
+                </div>
             </div>
+            
 
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-4 lg:gap-3 py-2.5 text-white">
                 {collection.map((nft, i) => (

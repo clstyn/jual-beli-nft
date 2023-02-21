@@ -12,9 +12,9 @@ export const About = () => {
         transition={{ duration: 3, repeat: Infinity }}>
       </motion.div> */}
       <p>
-        PStore is an NFT marketplace where you can sell and buy collections. Discover many awesome collections here!
+        PStore is an NFT marketplace where you can sell and buy assets. Discover many awesome assets here!
       </p>
-      <small className='text-xs mt-8'>
+      <small className='text-sm mt-8'>
         Make sure to connect your wallet to Goerli Network
       </small>
     </div>

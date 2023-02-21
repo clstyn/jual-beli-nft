@@ -19,7 +19,7 @@ export const TransactionSec = () => {
 
       
     return(
-        <div className="min-h-16 mt-12 md:mt-24" id='transactions'>
+        <div className="min-h-screen mt-12 md:mt-24" id='transactions'>
             <h1 className="font-poppins text-white font-bold text-[18px] md:text-[36px] 2xl:text-[48px]">
                 {collection.length > 0 ? 'LATEST TRANSACTIONS': 'NO TRANSACTIONS YET'}
             </h1>

@@ -8,20 +8,8 @@ import { useGlobalState, truncate, setAlert } from "../store"
 export const Navbar = () => {
     const [connectedAccount] = useGlobalState('connectedAccount')
 
-    const scrollToAbout = () => {
-        document.getElementById("about").scrollIntoView({behavior: "smooth"})
-    }
-
     const scrollToArt = () => {
         document.getElementById("artworks").scrollIntoView({behavior: "smooth"})
-    }
-
-    const scrollToTx = () => {
-        document.getElementById("transactions").scrollIntoView({behavior: "smooth"})
-    }
-
-    const scrollToCon = () => {
-        document.getElementById("community").scrollIntoView({behavior: "smooth"})
     }
    
     return(
@@ -31,18 +19,8 @@ export const Navbar = () => {
             <ul className="hidden md:flex items-center ml-12 gap-4 ">
                 <li className="cursor-pointer ">
                     <button 
-                    className="hover:font-bold "
-                    onClick={scrollToAbout}>About</button>
-                </li>
-                <li className="cursor-pointer ">
-                    <button 
-                    className="hover:font-bold "
-                    onClick={scrollToArt}>Market</button>
-                </li>
-                <li className="cursor-pointer ">
-                    <button 
-                    className="hover:font-bold "
-                    onClick={scrollToTx}>Community</button>
+                    className="hover:font-bold transition-all"
+                    onClick={scrollToArt}>Artworks</button>
                 </li>
             </ul>
 
@@ -68,46 +46,18 @@ export const Navbar = () => {
                             leaveTo="transform opacity-0 scale-95"
                             >
                                 <Menu.Items className='flex flex-col absolute top-10 z-50 p-4 -translate-x-6 items-start rounded-lg backdrop-blur-md bg-[rgba(10,17,40,0.3)] '>
-                                    <Menu.Item>
-                                    {({ active }) => (
-                                        <button
-                                        className={`${active && 'bg-blue-500'}`}
-                                        onClick={scrollToAbout}
-                                        >
-                                        About
-                                        </button>
-                                    )}
-                                    </Menu.Item>
+                                   
                                     <Menu.Item>
                                         {({ active }) => (
                                             <button
                                             className={`${active && 'bg-blue-500'}`}
                                             onClick={scrollToArt}
                                             >
-                                            Market
+                                            Artworks
                                             </button>
                                         )}
                                     </Menu.Item>
-                                    <Menu.Item>
-                                        {({ active }) => (
-                                            <button
-                                            className={`${active && 'bg-blue-500'}`}
-                                            onClick={scrollToTx}
-                                            >
-                                            Transactions
-                                            </button>
-                                        )}
-                                    </Menu.Item>
-                                    <Menu.Item>
-                                        {({ active }) => (
-                                            <button
-                                            className={`${active && 'bg-blue-500'}`}
-                                            onClick={scrollToCon}
-                                            >
-                                            Community
-                                            </button>
-                                        )}
-                                    </Menu.Item>
+                    
                                 </Menu.Items>
                             </Transition>
                         </Menu>
