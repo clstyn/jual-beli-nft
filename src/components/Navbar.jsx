@@ -1,7 +1,9 @@
 import { Fragment } from "react"
+import { useNavigate } from 'react-router-dom'
 import { Menu, Transition } from "@headlessui/react"
 import { connectWallet } from "../Blockchain.services"
 import { useGlobalState, truncate, setAlert } from "../store"
+
 
 
 
@@ -12,6 +14,8 @@ export const Navbar = () => {
         document.getElementById("artworks").scrollIntoView({behavior: "smooth"})
     }
    
+    const navigate = useNavigate();
+
     return(
         <>
         <div className="z-50 h-16 flex w-full items-center justify-between font-[24px] text-white px-8 backdrop-blur-lg sticky top-0">
@@ -30,7 +34,7 @@ export const Navbar = () => {
                 </button>
             ) : (
                 <>
-                    <div className="hidden md:block group shadow-lg md:shadow-xl font-bold shadow-black ml-8 rounded-[16px] bg-gradient-to-br from-[#00A6A6] to-[#F08700] px-2 py-1">
+                    <div onClick={()=>navigate('/dev/fio/marketplace/dashboard')} className="cursor-pointer hover:scale-105 transition-all hidden md:block group shadow-lg md:shadow-xl font-bold shadow-black ml-8 rounded-[16px] bg-gradient-to-br from-[#00A6A6] to-[#F08700] px-2 py-1">
                         {truncate(connectedAccount,4,4,11)}
                     </div>
                     <div className="md:hidden">
@@ -54,6 +58,17 @@ export const Navbar = () => {
                                             onClick={scrollToArt}
                                             >
                                             Artworks
+                                            </button>
+                                        )}
+                                    </Menu.Item>
+
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <button
+                                            className={`${active && 'bg-blue-500'}`}
+                                            onClick={()=>navigate('/dev/fio/marketplace/dashboard')}
+                                            >
+                                            Dashboard
                                             </button>
                                         )}
                                     </Menu.Item>

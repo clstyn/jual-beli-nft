@@ -36,7 +36,7 @@ export const ArtworkSec = () => {
                 {nfts.length > 0 ? 'LATEST ARTWORKS' : 'NO ARTWORKS YET'}
             </h1>
 
-            <div className="w-full flex justify-between">
+            <div className="w-full flex flex-col sm:flex-row justify-between">
                 <div className='flex gap-8'>
                     <label className='text-white font-poppins text-lg md:text-2xl'>
                         <input type="radio" name="owned" id="0" className='mr-2 md:mr-4 md:scale-[2]' onChange={()=>seeAll()} />
@@ -47,11 +47,11 @@ export const ArtworkSec = () => {
                         Owned
                     </label>
                 </div>
-                <div className='w-1/4'>
+                <div className='sm:w-1/2 md:w-1/4'>
                     <input 
                     type="text"
-                    className="border-none rounded-md text-md pl-4 py-1" 
-                    placeholder="Search assets title"
+                    className="border-none rounded-md text-md mt-4 sm:mt-0 pl-4 py-1 w-full" 
+                    placeholder="Search assets title..."
                     onChange={searchAssets}/>
                 </div>
             </div>
