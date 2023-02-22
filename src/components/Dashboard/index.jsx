@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getGlobalState, setGlobalState, useGlobalState } from "../../store"
 
 import { Side } from './Side'
+import { Main } from './Main'
 
 import Identicon from 'react-identicons'
 
@@ -19,8 +20,9 @@ export const MainDashboard = () => {
     }, [nfts])
 
     return (
-        <div className='h-screen w-full bg-indigo-900 text-white font-poppins grid grid-cols-4 md:overflow-hidden'>
+        <div className='min-h-screen w-full bg-indigo-900 text-white font-poppins grid grid-cols-4 md:overflow-hidden'>
             <Side/>
+            <Main collection={myColl}/>
         </div>
     )
 }

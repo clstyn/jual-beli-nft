@@ -75,7 +75,7 @@ export const ArtworkSec = () => {
     )
 }
 
-const Card = ({nft}) => {
+export const Card = ({nft}) => {
 
     const setNft = () => {
         setGlobalState('nft', nft)
