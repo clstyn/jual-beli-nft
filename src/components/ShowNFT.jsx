@@ -41,7 +41,13 @@ export const ShowNFT = () => {
             <div className="bg-gray-800 shadow-xl shadow-pink-800 rounded-xl w-11/12 md:w-2/5 h-7/12 p-6">
                 <div className="flex flex-col">
                     <div className="flex justify-between">
-                        <p className="font-semibold text-white">Buy NFT</p>
+                        {
+                            connectedAccount === nft?.owner ? (
+                                <p className="font-semibold text-white">NFT Detail</p>
+                            ) : (
+                                <p className="font-semibold text-white">Buy NFT</p>
+                            )
+                        }
                         <button type="button" className="border-0 bg-transparent focus:outline-none text-white" onClick={closeModal}>
                             <FaTimes/>
                         </button>
