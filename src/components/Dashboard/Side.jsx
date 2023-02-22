@@ -5,10 +5,18 @@ import Identicon from 'react-identicons'
 import { Navigate, useNavigate } from 'react-router-dom'
 
 export const Side = () => {
-    
+    const [profile] = useGlobalState('profile')
     const account = getGlobalState('connectedAccount')
     
     const navigate = useNavigate();
+
+    function clickProfile (){
+        setGlobalState('profile', true)
+    }
+
+    function clickColl (){
+        setGlobalState('profile', false)
+    }
 
     return (
     <div className='col-span-4 md:col-span-1 bg-blue-800 shadow-xl shadow-black md:h-auto'>
@@ -19,8 +27,8 @@ export const Side = () => {
             </div>
         
             <div className='my-4 md:my-24 items-center justify-center w-full flex gap-8 md:flex-col'>
-                <div className={`cursor-pointer font-bold`}>Profile</div>
-                {/* <div className={`cursor-pointer hover:font-bold`}>My NFTs</div> */}
+                <div className={`cursor-pointer ${profile? "font-bold" : ""} hover:font-bold`} onClick={clickProfile}>Profile</div>
+                <div className={`cursor-pointer ${!profile? "font-bold" : ""} hover:font-bold`} onClick={clickColl}>My NFTs</div>
             </div>
             <div className="hover:underline cursor-pointer" onClick={()=> navigate('/dev/fio/marketplace')}>&larr; Back to Home</div>
         </div>
