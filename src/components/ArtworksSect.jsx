@@ -3,7 +3,7 @@ import { getGlobalState, setGlobalState, useGlobalState } from "../store"
 
 export const ArtworkSec = () => {
     const account = getGlobalState('connectedAccount')
-    const [nfts] = useGlobalState('nfts')
+    const [nfts] = useGlobalState('listedNfts')
     const [end, setEnd] = useState(4)
     const [count] = useState(4)
     const [collection, setCollection] = useState([])
@@ -33,7 +33,7 @@ export const ArtworkSec = () => {
     return(
         <div className="min-h-screen" id="artworks">
             <h1 className="font-poppins text-white font-bold text-[18px] md:text-[36px] 2xl:text-[48px]">
-                {nfts.length > 0 ? 'LATEST ARTWORKS' : 'NO ARTWORKS YET'}
+                {nfts.length > 0 ? 'LATEST ARTWORKS' : 'NO ARTWORKS ON SALE'}
             </h1>
 
             <div className="w-full flex flex-col sm:flex-row justify-between">

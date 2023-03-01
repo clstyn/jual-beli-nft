@@ -73,6 +73,7 @@ const structuredNfts = (nfts) => {
       description: nft.description,
       metadataURI: nft.metadataURI,
       timestamp: nft.timestamp,
+      isListed: nft.isListed
     }))
     .reverse()
 }
@@ -87,6 +88,19 @@ const getAllNFTs = async () => {
 
     setGlobalState('nfts', structuredNfts(nfts))
     setGlobalState('transactions', structuredNfts(transactions))
+  } catch (error) {
+    setAlert("Please connect Metamask", "red")
+  }
+}
+
+const getListedNFTs = async () => {
+  try {
+    if (!ethereum) return alert('Please install Metamask')
+
+    const contract = await getEthereumContract()
+    const nfts = await contract.methods.getListedNFTs().call()
+
+    setGlobalState('listedNfts', structuredNfts(nfts))
   } catch (error) {
     setAlert("Please connect Metamask", "red")
   }
@@ -137,6 +151,16 @@ const updateNFT = async ({ id, cost }) => {
   }
 }
 
+const setListed = async ({id}) => {
+  try {
+    const contract = await getEthereumContract()
+    const buyer = getGlobalState('connectedAccount')
+    await contract.methods.setListed(Number(id)).send({ from: buyer })
+  } catch (error) {
+    reportError(error)
+  }
+}
+
 const reportError = (error) => {
   setAlert(JSON.stringify(error), 'red')
   throw new Error('No ethereum object.')
@@ -149,4 +173,6 @@ export {
   buyNFT,
   updateNFT,
   isWalletConnected,
+  setListed,
+  getListedNFTs
 }

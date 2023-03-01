@@ -2,7 +2,7 @@ import Identicon from 'react-identicons'
 import { useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
 import { setGlobalState, truncate, useGlobalState, setAlert } from '../store'
-import { buyNFT } from '../Blockchain.services'
+import { buyNFT, setListed } from '../Blockchain.services'
 import GambarDummy from '../assets/dummy.jpg'
 
 export const ShowNFT = () => {
@@ -29,6 +29,25 @@ export const ShowNFT = () => {
         } catch (error) {
             console.log('Error transfering NFT: ', error)
             setAlert('Purchase failed...', 'red')
+        }
+    }
+
+    const handleListing = async () => {
+        if(confirm("Are you sure to change this NFT listing status?")){
+            setGlobalState('showModal', 'scale-0')
+            setGlobalState('loading', {
+                show: true,
+                msg: 'Changing Listing Status...',
+            })  
+
+            try {
+                await setListed({id: nft.id})
+                setAlert('Status changed', 'green')
+                window.location.reload()
+            } catch (error) {
+                console.log('Error changing listing status of NFT: ', error)
+                setAlert('Operation failed...', 'red')
+            }
         }
     }
 
@@ -71,7 +90,7 @@ export const ShowNFT = () => {
 
                         <div className="flex justify-between items-center space-x-2 mt-4">
                             <div className='flex justify-start items-center'>
-                                <Identicon string={nft?.owner} size={50} className="h-10 w-10 object-contain rounded-full mr-3"/>
+                                <Identicon string={nft?.owner} size={50} className="bg-white h-10 w-10 object-contain rounded-full mr-3"/>
 
                                 <div className='flex flex-col justify-center items-start'>
                                     <small className='text-white font-bold'>@owner</small>
@@ -94,16 +113,44 @@ export const ShowNFT = () => {
                         </div>
                     </div>
                     {connectedAccount == nft?.owner ? (
-                        <button
-                            onClick={onChangePrice}
-                            className="flex justify-center items-center
-                            w-full text-white text-md bg-pink-800 py-2 px-5 rounded-full
-                            drop-shadow-xl border border-transparent
-                            hover:border hover:bg-pink-900 hover:font-semibold
-                            focus:outline-none focus:ring mt-5 transition-all"
-                        >
-                            Change Price
-                        </button>
+                        <div className="flex justify-between items-center space-x-2">
+                            <button
+                                onClick={onChangePrice}
+                                className="flex justify-center items-center
+                                w-full text-white text-md bg-pink-800 py-2 px-5 rounded-full
+                                drop-shadow-xl border border-transparent
+                                hover:border hover:bg-pink-900 hover:font-semibold
+                                focus:outline-none focus:ring mt-5 transition-all"
+                            >
+                                Change Price
+                            </button>
+                            {
+                                nft?.isListed ? (
+                                    <button
+                                        onClick={handleListing}
+                                        className="flex justify-center items-center
+                                        w-full text-white text-md bg-pink-800 py-2 px-5 rounded-full
+                                        drop-shadow-xl border border-transparent
+                                        hover:border hover:bg-pink-900 hover:font-semibold
+                                        focus:outline-none focus:ring mt-5 transition-all"
+                                    >
+                                        Withdraw from Market
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={handleListing}
+                                        className="flex justify-center items-center
+                                        w-full text-white text-md bg-pink-800 py-2 px-5 rounded-full
+                                        drop-shadow-xl border border-transparent
+                                        hover:border hover:bg-pink-900 hover:font-semibold
+                                        focus:outline-none focus:ring mt-5 transition-all"
+                                    >
+                                        List
+                                    </button>
+                                )
+                            }
+                            
+                        </div>
                     ) : (
                         <div className="flex justify-between items-center space-x-2">
                             <button

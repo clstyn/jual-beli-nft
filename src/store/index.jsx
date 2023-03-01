@@ -9,6 +9,7 @@ const { setGlobalState, useGlobalState, getGlobalState } = createGlobalState({
     connectedAccount: '',
     nft: null,
     nfts: [],
+    listedNfts: [],
     transactions: [],
     contract: null,
     profile: true

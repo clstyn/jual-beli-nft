@@ -6,7 +6,7 @@ import { Alert } from "./components/Alert";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 
-import { getAllNFTs, isWalletConnected } from "./Blockchain.services";
+import { getAllNFTs, getListedNFTs, isWalletConnected } from "./Blockchain.services";
 
 function App() {
 
@@ -15,6 +15,7 @@ function App() {
     const initial = async () => {
       await isWalletConnected()
       await getAllNFTs()
+      await getListedNFTs()
     } 
     
     initial().catch(console.error)

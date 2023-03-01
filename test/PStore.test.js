@@ -69,7 +69,7 @@ contract('PStoreNFTv2', ([deployer, buyer1]) => {
 
       it('Returns an NFT object', async () => {
         result = await contract.getNFT(1)
-        result.length.toString().should.equal('9')
+        result.length.toString().should.equal('10')
       })
 
       it('Has the entered royalty percentage', async () => {
@@ -80,6 +80,11 @@ contract('PStoreNFTv2', ([deployer, buyer1]) => {
       it('Makes the minter the royalty receiver', async () => {
         result = await contract.getNFT(1)
         result.creator.should.equal(buyer1)
+      })
+
+      it('Has the correct listed status', async () => {
+        result = await contract.getNFT(1)
+        result.isListed.should.equal(true)
       })
     })
 
