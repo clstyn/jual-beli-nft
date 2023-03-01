@@ -7,7 +7,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract PStoreNFTv2 is ERC721Enumerable, Ownable {
 
-    // Mencoba membuat kontrak dengan sistem royalti baru
     using Strings for uint256;
     mapping(string => uint8) existingURIs;
     mapping(uint256 => address) public holderOf;
@@ -34,10 +33,12 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         string description;
         string metadataURI;
         uint256 timestamp;
+        bool isListed;
     }
 
     TransactionStruct[] transactions;
     TransactionStruct[] minted;
+    TransactionStruct[] listed;
 
     constructor(
         string memory _name,
@@ -70,7 +71,8 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
                 title,
                 description,
                 metadataURI,
-                block.timestamp
+                block.timestamp,
+                true
             )
         );
 
@@ -107,7 +109,8 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
                 minted[id - 1].title,
                 minted[id - 1].description,
                 minted[id - 1].metadataURI,
-                block.timestamp
+                block.timestamp,
+                minted[id - 1].isListed
             )
         );
 
@@ -120,6 +123,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         );
 
         minted[id - 1].owner = msg.sender;
+        setListed(id);
     }
 
     function changePrice(uint256 id, uint256 newPrice) external returns (bool) {
@@ -135,8 +139,31 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         require(success);
     }
 
+
+    function setListed(uint256 id) public returns (bool) {
+        require(msg.sender == minted[id - 1].owner, "Operation Not Allowed!");
+
+        if (minted[id - 1].isListed == true) {
+            minted[id - 1].isListed = false;
+        } else if (minted[id - 1].isListed == false) {
+            minted[id - 1].isListed = true;
+        }
+        return true;
+    }
+
     function getAllNFTs() external view returns (TransactionStruct[] memory) {
         return minted;
+    }
+
+    function getListedNFTs() external returns (TransactionStruct[] memory) {
+        for (uint256 i = 0; i < minted.length; i++){
+            if (minted[i].isListed == true){
+                listed.push(
+                    minted[i]
+                );
+            }
+        }
+        return listed;
     }
 
     function getNFT(uint256 id) external view returns (TransactionStruct memory) {
