@@ -1,17 +1,26 @@
+require("@nomicfoundation/hardhat-toolbox");
+require("dotenv").config();
 /** @type import('hardhat/config').HardhatUserConfig */
 
-require("dotenv").config();
-
 module.exports = {
-  solidity: "0.8.19",
+  solidity: {
+    version: "0.8.19",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 1000,
+      },
+    },
+  },
+  allowUnlimitedContractSize: true,
   networks: {
     development: {
       url: "http://127.0.0.1:8545",
-      chainId: 1337,
+      chainId: 31337,
     },
     sepolia: {
       url: process.env.ENDPOINT_URL || "",
-      accounts: [],
+      accounts: [process.env.PRIVATE_KEY],
     },
   },
 };

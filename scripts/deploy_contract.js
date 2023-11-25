@@ -1,19 +1,15 @@
-import { ethers } from "hardhat";
+const hre = require("hardhat");
 
 async function main() {
-  const [deployer] = await ethers.getSigners();
+  const PStoreNFTv2 = await hre.ethers.getContractFactory("PStoreNFTv2");
+  const pstorenftv2 = await PStoreNFTv2.deploy("PStore NFT v2", "PNFT2");
 
-  console.log("Deploying contracts with the account:", deployer.address);
+  await pstorenftv2.waitForDeployment();
 
-  const Token = await ethers.getContractFactory("PStoreNFTv2");
-  const token = await Token.deploy();
-
-  console.log("Token address:", token.address);
+  console.log(`deployed contract address to ${await pstorenftv2.getAddress()}`);
 }
 
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
