@@ -7,7 +7,7 @@ const fromWei = (num) => web3.utils.fromWei(num.toString())
 
 const EVM_REVERT = 'VM Exception while processing transaction: revert'
 
-contract('PStoreNFTv2', ([deployer, buyer1]) => {
+contract('PStoreNFTv2', ([deployer, buyer1, buyer2]) => {
   const COST = toWei(0.01)
   const _NAME = 'PStore NFT v2'
   const _SYMBOL = 'PNFT2'
@@ -86,6 +86,17 @@ contract('PStoreNFTv2', ([deployer, buyer1]) => {
         result = await contract.getNFT(1)
         result.isListed.should.equal(true)
       })
+
+      describe('Purchasing', ()=> {
+        beforeEach(async () => {
+          result = await contract.payToBuy(1, { from: buyer2, value: COST })
+        })
+
+        it('Confirm buyer owns purchased token', async () => {
+          result = await contract.getNFT(1)
+          result.owner.should.equal(buyer2)
+        })
+      })
     })
 
     describe('Failure', () => {
@@ -100,6 +111,33 @@ contract('PStoreNFTv2', ([deployer, buyer1]) => {
           .payToMint(TITLE, DESCRIPTION, URI, SALES_PRICE, ROYALTY_PERCENT, { from: deployer, value: COST })
           .should.be.rejectedWith(EVM_REVERT)
       })
+
+      it('Prevents purchase by owner', async () => {
+        await contract
+          .payToBuy(1, { from: buyer1, value: COST })
+          .should.be.rejectedWith(EVM_REVERT)
+      })
     })
   })
+
+  // describe('Purchase', () => {
+  //   describe('Success', () => {
+  //     beforeEach(async () => {
+  //       result = await contract.payToBuy(1, { from: buyer2, value: COST })
+  //     })
+
+  //     it('Confirms buyer owns purchased token', async () => {
+  //       result = await contract.ownerOf(1)
+  //       result.should.equal(buyer1)
+  //     })
+  //   })
+
+  //   describe('Failure', () => {
+  //     it('Prevents purchase by owner', async () => {
+  //       await contract
+  //         .payToBuy(1, { from: buyer1, value: COST })
+  //         .should.be.rejectedWith(EVM_REVERT)
+  //     })
+  //   })
+  // })
 })

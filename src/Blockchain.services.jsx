@@ -1,65 +1,65 @@
-import Web3 from 'web3'
-import { setGlobalState, getGlobalState, setAlert } from './store'
-import abi from './abis/PStoreNFTv2.json'
+import Web3 from "web3";
+import { setGlobalState, getGlobalState, setAlert } from "./store";
+import abi from "./abis/PStoreNFTv2.json";
 
-const { ethereum } = window
-window.web3 = new Web3(ethereum)
-window.web3 = new Web3(window.web3.currentProvider)
+const { ethereum } = window;
+window.web3 = new Web3(ethereum);
+window.web3 = new Web3(window.web3.currentProvider);
 
 const getEthereumContract = async () => {
-  const connectedAccount = getGlobalState('connectedAccount')
+  const connectedAccount = getGlobalState("connectedAccount");
 
   if (connectedAccount) {
-    const web3 = window.web3
-    const networkId = await web3.eth.net.getId()
-    const networkData = abi.networks[networkId]
+    const web3 = window.web3;
+    const networkId = await web3.eth.net.getId();
+    const networkData = abi.networks[networkId];
 
     if (networkData) {
-      const contract = new web3.eth.Contract(abi.abi, networkData.address)
-      return contract
+      const contract = new web3.eth.Contract(abi.abi, networkData.address);
+      return contract;
     } else {
-      return null
+      return null;
     }
   } else {
-    return getGlobalState('contract')
+    return getGlobalState("contract");
   }
-}
+};
 
 const connectWallet = async () => {
   try {
-    if (!ethereum) return alert('Please install Metamask')
-    const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
-    setGlobalState('connectedAccount', accounts[0].toLowerCase())
-    window.location.reload()
+    if (!ethereum) return alert("Please install Metamask");
+    const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+    setGlobalState("connectedAccount", accounts[0].toLowerCase());
+    window.location.reload();
   } catch (error) {
-    reportError(error)
+    reportError(error);
   }
-}
+};
 
 const isWalletConnected = async () => {
   try {
-    if (!ethereum) return alert('Please install Metamask')
-    const accounts = await ethereum.request({ method: 'eth_accounts' })
+    if (!ethereum) return alert("Please install Metamask");
+    const accounts = await ethereum.request({ method: "eth_accounts" });
 
-    window.ethereum.on('chainChanged', (chainId) => {
-      window.location.reload()
-    })
+    window.ethereum.on("chainChanged", (chainId) => {
+      window.location.reload();
+    });
 
-    window.ethereum.on('accountsChanged', async () => {
-      setGlobalState('connectedAccount', accounts[0].toLowerCase())
-      await isWalletConnected()
-    })
+    window.ethereum.on("accountsChanged", async () => {
+      setGlobalState("connectedAccount", accounts[0].toLowerCase());
+      await isWalletConnected();
+    });
 
     if (accounts.length) {
-      setGlobalState('connectedAccount', accounts[0].toLowerCase())
+      setGlobalState("connectedAccount", accounts[0].toLowerCase());
     } else {
-      alert('Please connect wallet.')
-      return
+      alert("Please connect wallet.");
+      return;
     }
   } catch (error) {
-    setAlert("Please connect Metamask", "red")
+    setAlert("Please connect Metamask", "red");
   }
-}
+};
 
 const structuredNfts = (nfts) => {
   return nfts
@@ -73,98 +73,98 @@ const structuredNfts = (nfts) => {
       description: nft.description,
       metadataURI: nft.metadataURI,
       timestamp: nft.timestamp,
-      isListed: nft.isListed
+      isListed: nft.isListed,
     }))
-    .reverse()
-}
+    .reverse();
+};
 
 const getAllNFTs = async () => {
   try {
-    if (!ethereum) return alert('Please install Metamask')
+    if (!ethereum) return alert("Please install Metamask");
 
-    const contract = await getEthereumContract()
-    const nfts = await contract.methods.getAllNFTs().call()
-    const transactions = await contract.methods.getAllTransactions().call()
+    const contract = await getEthereumContract();
+    const nfts = await contract.methods.getAllNFTs().call();
+    const transactions = await contract.methods.getAllTransactions().call();
 
-    setGlobalState('nfts', structuredNfts(nfts))
-    setGlobalState('transactions', structuredNfts(transactions))
+    setGlobalState("nfts", structuredNfts(nfts));
+    setGlobalState("transactions", structuredNfts(transactions));
   } catch (error) {
-    setAlert("Please connect Metamask", "red")
+    setAlert("Please connect Metamask", "red");
   }
-}
+};
 
 const getListedNFTs = async () => {
   try {
-    if (!ethereum) return alert('Please install Metamask')
+    if (!ethereum) return alert("Please install Metamask");
 
-    const contract = await getEthereumContract()
-    const nfts = await contract.methods.getListedNFTs().call()
+    const contract = await getEthereumContract();
+    const nfts = await contract.methods.getListedNFTs().call();
 
-    setGlobalState('listedNfts', structuredNfts(nfts))
+    setGlobalState("listedNfts", structuredNfts(nfts));
   } catch (error) {
-    setAlert("Please connect Metamask", "red")
+    setAlert("Please connect Metamask", "red");
   }
-}
+};
 
 const mintNFT = async ({ title, description, metadataURI, price, royalty }) => {
   try {
-    price = window.web3.utils.toWei(price.toString(), 'ether')
-    const contract = await getEthereumContract()
-    const account = getGlobalState('connectedAccount')
-    const mintPrice = window.web3.utils.toWei('0.01', 'ether')
+    price = window.web3.utils.toWei(price.toString(), "ether");
+    const contract = await getEthereumContract();
+    const account = getGlobalState("connectedAccount");
+    const mintPrice = window.web3.utils.toWei("0.01", "ether");
 
     await contract.methods
       .payToMint(title, description, metadataURI, price, royalty)
-      .send({ from: account, value: mintPrice })
+      .send({ from: account, value: mintPrice });
 
-    return true
+    return true;
   } catch (error) {
-    reportError(error)
+    reportError(error);
   }
-}
+};
 
 const buyNFT = async ({ id, cost }) => {
   try {
-    cost = window.web3.utils.toWei(cost.toString(), 'ether')
-    const contract = await getEthereumContract()
-    const buyer = getGlobalState('connectedAccount')
+    cost = window.web3.utils.toWei(cost.toString(), "ether");
+    const contract = await getEthereumContract();
+    const buyer = getGlobalState("connectedAccount");
 
     await contract.methods
       .payToBuy(Number(id))
-      .send({ from: buyer, value: cost })
+      .send({ from: buyer, value: cost });
 
-    return true
+    return true;
   } catch (error) {
-    reportError(error)
+    reportError(error);
   }
-}
+};
 
 const updateNFT = async ({ id, cost }) => {
   try {
-    cost = window.web3.utils.toWei(cost.toString(), 'ether')
-    const contract = await getEthereumContract()
-    const buyer = getGlobalState('connectedAccount')
+    cost = window.web3.utils.toWei(cost.toString(), "ether");
+    const contract = await getEthereumContract();
+    const buyer = getGlobalState("connectedAccount");
 
-    await contract.methods.changePrice(Number(id), cost).send({ from: buyer })
+    await contract.methods.changePrice(Number(id), cost).send({ from: buyer });
   } catch (error) {
-    reportError(error)
+    reportError(error);
   }
-}
+};
 
-const setListed = async ({id}) => {
+const setListed = async ({ id }) => {
   try {
-    const contract = await getEthereumContract()
-    const buyer = getGlobalState('connectedAccount')
-    await contract.methods.setListed(Number(id)).send({ from: buyer })
+    const contract = await getEthereumContract();
+    const buyer = getGlobalState("connectedAccount");
+    await contract.methods.setListed(Number(id)).send({ from: buyer });
   } catch (error) {
-    reportError(error)
+    reportError(error);
   }
-}
+};
 
 const reportError = (error) => {
-  setAlert(JSON.stringify(error), 'red')
-  throw new Error('No ethereum object.')
-}
+  setAlert(JSON.stringify(error), "red");
+  throw new Error("No ethereum object.");
+};
 
 export {
   getAllNFTs,
@@ -174,5 +174,5 @@ export {
   updateNFT,
   isWalletConnected,
   setListed,
-  getListedNFTs
-}
+  getListedNFTs,
+};

@@ -6,7 +6,6 @@ import "./ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract PStoreNFTv2 is ERC721Enumerable, Ownable {
-
     using Strings for uint256;
     mapping(string => uint8) existingURIs;
     mapping(uint256 => address) public holderOf;
@@ -43,8 +42,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
     constructor(
         string memory _name,
         string memory _symbol
-    ) ERC721(_name, _symbol) {
-    }
+    ) ERC721(_name, _symbol) {}
 
     function payToMint(
         string memory title,
@@ -56,7 +54,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         require(msg.value >= cost, "Ether too low for minting!");
         require(existingURIs[metadataURI] == 0, "This NFT is already minted!");
         require(msg.sender != owner(), "Sales not allowed!");
-                       
+
         payTo(owner(), msg.value);
 
         supply++;
@@ -76,13 +74,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
             )
         );
 
-        emit Sale(
-            supply,
-            msg.sender,
-            msg.value,
-            metadataURI,
-            block.timestamp
-        );
+        emit Sale(supply, msg.sender, msg.value, metadataURI, block.timestamp);
 
         _safeMint(msg.sender, supply);
         existingURIs[metadataURI] = 1;
@@ -90,11 +82,14 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
     }
 
     function payToBuy(uint256 id) external payable {
-        require(msg.value >= minted[id - 1].cost, "Ether too low for purchase!");
-        require(msg.sender != minted[id - 1].owner, "Operation Not Allowed!");
+        require(
+            msg.value >= minted[id - 1].cost,
+            "Ether kurang!"
+        );
+        require(msg.sender != minted[id - 1].owner, "Tidak dapat membeli aset sendiri");
 
-        uint256 royalty = (msg.value * minted[id-1].royaltyPercent) / 100;
-        payTo(minted[id - 1].creator, royalty); // kalo creatornya sama dengan owner maka dia mendapatkan 100% hasil penjualan
+        uint256 royalty = (msg.value * minted[id - 1].royaltyPercent) / 100;
+        payTo(minted[id - 1].creator, royalty);
         payTo(minted[id - 1].owner, (msg.value - royalty));
 
         totalTx++;
@@ -123,6 +118,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         );
 
         minted[id - 1].owner = msg.sender;
+        _transfer(address(this), msg.sender, id);
         setListed(id);
     }
 
@@ -138,7 +134,6 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         (bool success, ) = payable(to).call{value: amount}("");
         require(success);
     }
-
 
     function setListed(uint256 id) public returns (bool) {
         require(msg.sender == minted[id - 1].owner, "Operation Not Allowed!");
@@ -156,21 +151,25 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
     }
 
     function getListedNFTs() external returns (TransactionStruct[] memory) {
-        for (uint256 i = 0; i < minted.length; i++){
-            if (minted[i].isListed == true){
-                listed.push(
-                    minted[i]
-                );
+        for (uint256 i = 0; i < minted.length; i++) {
+            if (minted[i].isListed == true) {
+                listed.push(minted[i]);
             }
         }
         return listed;
     }
 
-    function getNFT(uint256 id) external view returns (TransactionStruct memory) {
+    function getNFT(
+        uint256 id
+    ) external view returns (TransactionStruct memory) {
         return minted[id - 1];
     }
 
-    function getAllTransactions() external view returns (TransactionStruct[] memory) {
+    function getAllTransactions()
+        external
+        view
+        returns (TransactionStruct[] memory)
+    {
         return transactions;
     }
 }
