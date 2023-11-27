@@ -10,6 +10,7 @@ import { Loading } from "../components/Loading";
 import { Alert } from "../components/Alert";
 import { About } from "../components/About";
 import { Community } from "../components/Community";
+import { Campaign } from '../components/Campaign';
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
       <div className="max-w-[1920px] px-[24px] md:px-[72px] xl:px-[172px] ">
         <Hero/>
         <About/>
+        <Campaign/>
         <ArtworkSec/>
         <TransactionSec/>
         <Community/>
