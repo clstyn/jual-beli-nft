@@ -18,6 +18,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         uint256 id,
         address indexed owner,
         uint256 cost,
+        uint256 goesToCampaignFund,
         string metadataURI,
         uint256 timestamp
     );
@@ -26,9 +27,11 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         uint256 id;
         address owner;
         address creator;
+        address campaignAddress;
         uint256 cost;
         uint256 royaltyPercent;
         string title;
+        string campaignName;
         string description;
         string metadataURI;
         uint256 timestamp;
@@ -48,12 +51,14 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         string memory title,
         string memory description,
         string memory metadataURI,
+        string memory campaignName,
+        address campaignAddress,
         uint256 salesPrice,
         uint256 royaltyPercent
     ) external payable {
-        require(msg.value >= cost, "Ether too low for minting!");
-        require(existingURIs[metadataURI] == 0, "This NFT is already minted!");
-        require(msg.sender != owner(), "Sales not allowed!");
+        require(msg.value >= cost, "Ether kurang untuk melakukan minting!");
+        require(existingURIs[metadataURI] == 0, "NFT ini sudah ada");
+        require(msg.sender != owner(), "Penjualan tidak diperbolehkan");
 
         payTo(owner(), msg.value);
 
@@ -64,9 +69,11 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
                 supply,
                 msg.sender,
                 msg.sender,
+                campaignAddress,
                 salesPrice,
                 royaltyPercent,
                 title,
+                campaignName,
                 description,
                 metadataURI,
                 block.timestamp,
@@ -74,7 +81,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
             )
         );
 
-        emit Sale(supply, msg.sender, msg.value, metadataURI, block.timestamp);
+        emit Sale(supply, msg.sender, msg.value, 0, metadataURI, block.timestamp);
 
         _safeMint(msg.sender, supply);
         existingURIs[metadataURI] = 1;
@@ -88,9 +95,9 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         );
         require(msg.sender != minted[id - 1].owner, "Tidak dapat membeli aset sendiri");
 
-        uint256 royalty = (msg.value * minted[id - 1].royaltyPercent) / 100;
-        payTo(minted[id - 1].creator, royalty);
-        payTo(minted[id - 1].owner, (msg.value - royalty));
+        uint256 funding = (msg.value * minted[id - 1].royaltyPercent) / 100;
+        payTo(minted[id - 1].campaignAddress, funding);
+        payTo(minted[id - 1].owner, (msg.value - funding));
 
         totalTx++;
 
@@ -99,9 +106,11 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
                 totalTx,
                 msg.sender,
                 minted[id - 1].creator,
+                minted[id - 1].campaignAddress,
                 msg.value,
                 minted[id - 1].royaltyPercent,
                 minted[id - 1].title,
+                minted[id - 1].campaignName,
                 minted[id - 1].description,
                 minted[id - 1].metadataURI,
                 block.timestamp,
@@ -113,6 +122,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
             totalTx,
             msg.sender,
             msg.value,
+            funding,
             minted[id - 1].metadataURI,
             block.timestamp
         );
