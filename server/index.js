@@ -2,8 +2,8 @@ const ethers = require('ethers')
 require('dotenv').config()
 
 const mongoose = require('mongoose')
-// const bodyParser = require('body-parser')
 const express = require('express')  
+const cors = require('cors')
 
 // const API_URL = process.env.API_URL
 // const PRIVATE_KEY = process.env.PRIVATE_KEY
@@ -20,7 +20,20 @@ const campaign = require('./routes/campaign')
 const app = express()
 app.use(express.json())
 
-// app.use(bodyParser.json())
+// cors origin
+const allowedOrigins = ['localhost', 'postman-origin'];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, true);
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+};
+app.use(cors(corsOptions))
 
 app.get('/', (req, res) => {
     res.send('API is working')
