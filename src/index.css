@@ -63,3 +63,8 @@ root {
     animation: lds-dual-ring 1.2s linear infinite;
   }
 }
+
+.border-glass {
+  border-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
