@@ -41,8 +41,8 @@ export const Hero = () => {
         <div className="h-full w-full bg-orange-500"></div>
       </motion.div>
       <div className="flex flex-col text-white font-poppins font-bold text-[36px] md:text-[60px] 2xl:text-[84px]">
-        <h1>Buy and Sell</h1>
-        <h1>great NFTs</h1>
+        <h1>Earn and Help</h1>
+        <h1>with Us</h1>
 
         <button
           onClick={() => {
@@ -53,7 +53,7 @@ export const Hero = () => {
           }}
           className="bg-pink-800 rounded-xl text-[12px] mt-8 w-1/2 py-2 hover:font-bold hover:bg-pink-900 transition-all"
         >
-          Mulai
+          Start
         </button>
       </div>
       <motion.div
