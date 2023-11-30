@@ -17,7 +17,7 @@ const getEthereumContract = async () => {
     // if (networkData) {
     const contract = new web3.eth.Contract(
       abi.abi,
-      "0xa88232189DfE4842186e630F76D8Aef79d6a1Cae"
+      "0x69FF9EA330016A5aa6B46a32F2834651667702aE"
     );
     return contract;
     // } else {
@@ -77,6 +77,8 @@ const structuredNfts = (nfts) => {
       metadataURI: nft.metadataURI,
       timestamp: nft.timestamp,
       isListed: nft.isListed,
+      campaignName: nft.campaignName,
+      campaignAddress: nft.campaignAddress,
     }))
     .reverse();
 };
@@ -91,6 +93,7 @@ const getAllNFTs = async () => {
 
     setGlobalState("nfts", structuredNfts(nfts));
     setGlobalState("transactions", structuredNfts(transactions));
+    console.log(getGlobalState("nfts"));
     console.log("success connect to sepolia testnet");
   } catch (error) {
     console.log(error.message);
