@@ -45,10 +45,15 @@ export const Hero = () => {
         <h1>great NFTs</h1>
 
         <button
-          onClick={openModal}
+          onClick={() => {
+            document.getElementById("campaigns").scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }}
           className="bg-pink-800 rounded-xl text-[12px] mt-8 w-1/2 py-2 hover:font-bold hover:bg-pink-900 transition-all"
         >
-          Create NFT
+          Mulai
         </button>
       </div>
       <motion.div
