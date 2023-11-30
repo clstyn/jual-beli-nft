@@ -1,6 +1,7 @@
 import Web3 from "web3";
 import { setGlobalState, getGlobalState, setAlert } from "./store";
-import abi from "./abis/PStoreNFTv2.json";
+// import abi from "./abis/PStoreNFTv2.json";
+import abi from "./artifacts/contracts/PStoreNFTv2.sol/PStoreNFTv2.json";
 
 const { ethereum } = window;
 window.web3 = new Web3(ethereum);
@@ -12,14 +13,16 @@ const getEthereumContract = async () => {
   if (connectedAccount) {
     const web3 = window.web3;
     const networkId = await web3.eth.net.getId();
-    const networkData = abi.networks[networkId];
-
-    if (networkData) {
-      const contract = new web3.eth.Contract(abi.abi, networkData.address);
-      return contract;
-    } else {
-      return null;
-    }
+    // const networkData = abi.networks[networkId];
+    // if (networkData) {
+    const contract = new web3.eth.Contract(
+      abi.abi,
+      "0xa88232189DfE4842186e630F76D8Aef79d6a1Cae"
+    );
+    return contract;
+    // } else {
+    //   return null;
+    // }
   } else {
     return getGlobalState("contract");
   }
@@ -88,8 +91,10 @@ const getAllNFTs = async () => {
 
     setGlobalState("nfts", structuredNfts(nfts));
     setGlobalState("transactions", structuredNfts(transactions));
+    console.log("success connect to sepolia testnet");
   } catch (error) {
-    setAlert("Please connect Metamask", "red");
+    console.log(error.message);
+    setAlert(error.message, "red");
   }
 };
 
@@ -101,12 +106,22 @@ const getListedNFTs = async () => {
     const nfts = await contract.methods.getListedNFTs().call();
 
     setGlobalState("listedNfts", structuredNfts(nfts));
+    console.log("success connect to sepolia testnet");
   } catch (error) {
-    setAlert("Please connect Metamask", "red");
+    console.log(error.message);
+    setAlert(error.message, "red");
   }
 };
 
-const mintNFT = async ({ title, description, metadataURI, price, royalty }) => {
+const mintNFT = async ({
+  title,
+  description,
+  metadataURI,
+  campaignName,
+  campaignAddress,
+  price,
+  royalty,
+}) => {
   try {
     price = window.web3.utils.toWei(price.toString(), "ether");
     const contract = await getEthereumContract();
@@ -114,11 +129,20 @@ const mintNFT = async ({ title, description, metadataURI, price, royalty }) => {
     const mintPrice = window.web3.utils.toWei("0.01", "ether");
 
     await contract.methods
-      .payToMint(title, description, metadataURI, price, royalty)
+      .payToMint(
+        title,
+        description,
+        metadataURI,
+        campaignName,
+        campaignAddress,
+        price,
+        royalty
+      )
       .send({ from: account, value: mintPrice });
 
     return true;
   } catch (error) {
+    console.log(error.message);
     reportError(error);
   }
 };

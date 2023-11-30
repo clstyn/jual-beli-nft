@@ -21,6 +21,10 @@ module.exports = {
     sepolia: {
       url: process.env.ENDPOINT_URL || "",
       accounts: [process.env.PRIVATE_KEY],
+      chainId: 11155111,
     },
+  },
+  paths: {
+    artifacts: "./src/artifacts",
   },
 };
