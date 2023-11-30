@@ -17,7 +17,8 @@ const getEthereumContract = async () => {
     // if (networkData) {
     const contract = new web3.eth.Contract(
       abi.abi,
-      "0x69FF9EA330016A5aa6B46a32F2834651667702aE"
+      // "0x69FF9EA330016A5aa6B46a32F2834651667702aE"
+      "0x931d06c73e6636b02b4aada6ddedb712b1fc011e"
     );
     return contract;
     // } else {
@@ -162,6 +163,7 @@ const buyNFT = async ({ id, cost }) => {
 
     return true;
   } catch (error) {
+    console.log(error.message);
     reportError(error);
   }
 };

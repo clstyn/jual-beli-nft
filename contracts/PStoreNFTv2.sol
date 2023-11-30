@@ -101,6 +101,8 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
 
         totalTx++;
 
+        _transfer(minted[id - 1].owner, msg.sender, id);
+
         transactions.push(
             TransactionStruct(
                 totalTx,
@@ -128,7 +130,6 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         );
 
         minted[id - 1].owner = msg.sender;
-        _transfer(address(this), msg.sender, id);
         setListed(id);
     }
 
