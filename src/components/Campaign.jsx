@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CampaignCard from "./element/CampaignCard";
 import axios from "axios";
+import { getGlobalState, setGlobalState, useGlobalState } from "../store";
 
 export const Campaign = () => {
   const [campaigns, setCampaigns] = useState([]);
@@ -13,6 +14,18 @@ export const Campaign = () => {
   }, []);
 
   console.log(campaigns);
+
+  const currCampaign = useGlobalState("selectedCampaign");
+  useEffect(() => {
+    console.log(currCampaign);
+  }, [currCampaign]);
+
+  const handleClickJoin = async (campaignId) => {
+    const response = await axios.get(
+      `http://localhost:5000/campaign/${campaignId}`
+    );
+    setGlobalState("selectedCampaign", response.data.campaigns);
+  };
 
   return (
     <div className="text-white font-poppins py-[70px] " id="campaigns">
@@ -27,6 +40,7 @@ export const Campaign = () => {
             desc={campaign.desc}
             goal={campaign.goal}
             currentFund={campaign.currentFund}
+            clickJoin={() => handleClickJoin(campaign._id)}
           />
         ))}
       </div>

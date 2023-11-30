@@ -1,50 +1,51 @@
-import { createGlobalState } from 'react-hooks-global-state'
+import { createGlobalState } from "react-hooks-global-state";
 
 const { setGlobalState, useGlobalState, getGlobalState } = createGlobalState({
-    modal: 'scale-0',
-    showModal: 'scale-0',
-    updateModal: 'scale-0',
-    loading: { show: false, msg:''},
-    alert: { show: false, msg: '', color: '' },
-    connectedAccount: '',
-    nft: null,
-    nfts: [],
-    listedNfts: [],
-    transactions: [],
-    contract: null,
-    profile: true
-})
+  modal: "scale-0",
+  showModal: "scale-0",
+  updateModal: "scale-0",
+  loading: { show: false, msg: "" },
+  alert: { show: false, msg: "", color: "" },
+  connectedAccount: "",
+  nft: null,
+  nfts: [],
+  listedNfts: [],
+  transactions: [],
+  contract: null,
+  profile: true,
+  selectedCampaign: null,
+});
 
-const setAlert = (msg, color = 'green') => {
-    setGlobalState('loading', false)
-    setGlobalState('alert', { show: true, msg, color })
-    setTimeout(() => {
-      setGlobalState('alert', { show: false, msg: '', color })
-    }, 6000)
-  }
+const setAlert = (msg, color = "green") => {
+  setGlobalState("loading", false);
+  setGlobalState("alert", { show: true, msg, color });
+  setTimeout(() => {
+    setGlobalState("alert", { show: false, msg: "", color });
+  }, 6000);
+};
 
 const setLoadingMsg = (msg) => {
-    const loading = getGlobalState('loading')
-    setGlobalState('loading', {show: true, msg})
-}
+  const loading = getGlobalState("loading");
+  setGlobalState("loading", { show: true, msg });
+};
 
-const truncate = (text, startChars, endChars, maxLength) => {
-  if(text.length > maxLength) {
-    var start = text.substring(0, startChars)
-    var end = text.substring(text.length - endChars, text.length)
+const truncate = (text = "", startChars, endChars, maxLength) => {
+  if (text.length > maxLength) {
+    var start = text.substring(0, startChars);
+    var end = text.substring(text.length - endChars, text.length);
     while (start.length + end.length < maxLength) {
-      start = start + '.'
+      start = start + ".";
     }
-    return start + end
+    return start + end;
   }
-  return text
-}
+  return text;
+};
 
 export {
-    useGlobalState,
-    setGlobalState,
-    getGlobalState,
-    setAlert,
-    setLoadingMsg,
-    truncate
-}
+  useGlobalState,
+  setGlobalState,
+  getGlobalState,
+  setAlert,
+  setLoadingMsg,
+  truncate,
+};

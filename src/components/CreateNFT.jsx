@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { create } from "ipfs-http-client";
 import {
@@ -9,6 +9,7 @@ import {
 } from "../store";
 import GambarDummy from "../assets/dummy.jpg";
 import { mintNFT } from "../Blockchain.services";
+import { getGlobalState, truncate } from "../store";
 
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
@@ -34,7 +35,22 @@ export const CreateNFT = () => {
   const [royaltyPercent, setRoyaltyPercent] = useState("");
   const [description, setDescription] = useState("");
   const [fileUrl, setFileUrl] = useState("");
+  const [campaignName, setCampaignName] = useState("");
+  const [campaignAddress, setCampaignAddress] = useState("");
   const [imgBase64, setImgBase64] = useState(null);
+
+  const currCampaign = getGlobalState("selectedCampaign");
+  useEffect(() => {
+    console.log(currCampaign);
+    if (currCampaign) {
+      setCampaignName(currCampaign.name);
+      setCampaignAddress(currCampaign.address);
+    }
+  }, [currCampaign]);
+
+  useEffect(() => {
+    console.log(campaignName, campaignAddress);
+  }, [campaignName, campaignAddress, currCampaign]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,7 +64,15 @@ export const CreateNFT = () => {
       const royalty = parseInt(royaltyPercent);
       const created = await client.add(fileUrl);
       const metadataURI = `https://ipfs.io/ipfs/${created.path}`;
-      const nft = { title, price, description, metadataURI, royalty };
+      const nft = {
+        title,
+        description,
+        metadataURI,
+        campaignName,
+        campaignAddress,
+        price,
+        royalty,
+      };
 
       setLoadingMsg("Memulai transaksi...");
       setFileUrl(metadataURI);
@@ -88,6 +112,8 @@ export const CreateNFT = () => {
     resetForm();
     setGlobalState("modal", "scale-0");
   };
+
+  useEffect(() => {}, []);
 
   return (
     <div
@@ -171,7 +197,7 @@ export const CreateNFT = () => {
               step={1}
               min={0}
               name="royalty"
-              placeholder="Royalty (%)"
+              placeholder="Funding Percentage (%)"
               onChange={(e) => setRoyaltyPercent(e.target.value)}
               value={royaltyPercent}
               required
@@ -190,6 +216,34 @@ export const CreateNFT = () => {
               value={description}
               required
             ></textarea>
+          </div>
+
+          <p className="text-sm font-medium text-white mt-4">
+            Target Funding Information:
+          </p>
+
+          <div className="flex flex-row justify-between items-center bg-gray-800 rounded-md mt-5 ">
+            <input
+              className="block w-full text-sm
+                            text-slate-500 bg-transparent border-0
+                            focus:outline-none focus:ring-0 pl-4 py-2"
+              type="text"
+              placeholder="Campaign Name"
+              value={campaignName}
+              disabled
+            />
+          </div>
+
+          <div className="flex flex-row justify-between items-center bg-gray-800 rounded-md mt-5 ">
+            <input
+              className="block w-full text-sm
+                            text-slate-500 bg-transparent border-0
+                            focus:outline-none focus:ring-0 pl-4 py-2"
+              type="text"
+              placeholder="Campaign Address"
+              defaultValue={campaignAddress}
+              disabled
+            />
           </div>
 
           <button
