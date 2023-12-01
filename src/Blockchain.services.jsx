@@ -30,17 +30,19 @@ const getEthereumContract = async () => {
       console.log("Event listener connected, subscription ID:", subscriptionId);
     })
     .on("data", (event) => {
-      // axios.patch(`http://localhost:5000/campaign/${event.returnValues.campaignId}`, {
-      //   fundToAdd: event.returnValues.funding
-      // })
-      // .then((res)=>{
-      //   window.alert('Fund added successfully')
-      //   window.location.reload()
-        console.log("New event data:", event);
-      // })
-      // .catch((err)=>{
-      //   window.alert('Failed to add fund')
-      // })
+      if(event.returnValues.campaignId != ""){ 
+        axios.patch(`http://localhost:5000/campaign/${event.returnValues.campaignId}`, {
+          fundToAdd: event.returnValues.funding
+        })
+        .then((res)=>{
+          window.alert('Fund added successfully')
+          window.location.reload()
+          console.log("New event data:", event);
+        })
+        .catch((err)=>{
+          window.alert('Failed to add fund')
+        })
+      }
     })
     .on("changed", (event) => {
       console.log("Event changed:", event);
