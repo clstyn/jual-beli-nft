@@ -25,7 +25,7 @@ export const ShowNFT = () => {
     try {
       await buyNFT(nft);
       setAlert("Transfer completed...", "green");
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.log("Error transfering NFT: ", error);
       setAlert("Purchase failed...", "red");
