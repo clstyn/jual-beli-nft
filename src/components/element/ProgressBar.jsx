@@ -6,9 +6,9 @@ export default function ProgressBar({ currentFund = 0.5, setGoal = 1 }) {
   return (
     <div className="w-full bg-gray-200 rounded-full h-2.5 ">
       <div
-        className="w-full bg-[#9D174D] h-2.5 rounded-full"
+        className="text-[12px] w-full bg-[#9D174D] h-2.5 rounded-full"
         style={{ width: `${percentage}%` }}
-      ></div>
+      >{currentFund} ETH</div>
     </div>
   );
 }

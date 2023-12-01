@@ -9,21 +9,47 @@ window.web3 = new Web3(window.web3.currentProvider);
 
 const getEthereumContract = async () => {
   const connectedAccount = getGlobalState("connectedAccount");
-
   if (connectedAccount) {
     const web3 = window.web3;
-    const networkId = await web3.eth.net.getId();
-    // const networkData = abi.networks[networkId];
-    // if (networkData) {
-    const contract = new web3.eth.Contract(
-      abi.abi,
-      // "0x69FF9EA330016A5aa6B46a32F2834651667702aE"
-      "0x931d06c73e6636b02b4aada6ddedb712b1fc011e"
-    );
+    const contractAddress = "0x931d06c73e6636b02b4aada6ddedb712b1fc011e"; // Replace with your contract address
+    const contract = new web3.eth.Contract(abi.abi, contractAddress);
+
+    // Event listener for the 'Sale' event
+    contract.events.Sale({}, (error, event) => {
+      if (error) {
+        console.error("Error in event listener:", error);
+        return;
+      }
+
+      const eventData = event.returnValues;
+      const fundingValue = eventData.funding;
+      // Add your logic to update the off-chain database with the fundingValue
+      console.log("Sale event received. Funding Value:", fundingValue);
+    })
+    .on("connected", (subscriptionId) => {
+      console.log("Event listener connected, subscription ID:", subscriptionId);
+    })
+    .on("data", (event) => {
+      // axios.patch(`http://localhost:5000/campaign/${event.returnValues.campaignId}`, {
+      //   fundToAdd: event.returnValues.funding
+      // })
+      // .then((res)=>{
+      //   window.alert('Fund added successfully')
+      //   window.location.reload()
+        console.log("New event data:", event);
+      // })
+      // .catch((err)=>{
+      //   window.alert('Failed to add fund')
+      // })
+    })
+    .on("changed", (event) => {
+      console.log("Event changed:", event);
+    })
+    .on("error", (error) => {
+      console.error("Error in event listener:", error);
+    });
+
     return contract;
-    // } else {
-    //   return null;
-    // }
   } else {
     return getGlobalState("contract");
   }
