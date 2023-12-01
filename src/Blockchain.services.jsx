@@ -2,7 +2,7 @@ import Web3 from "web3";
 import { setGlobalState, getGlobalState, setAlert } from "./store";
 // import abi from "./abis/PStoreNFTv2.json";
 import abi from "./artifacts/contracts/PStoreNFTv2.sol/PStoreNFTv2.json";
-import axios from 'axios';
+import axios from "axios";
 
 const { ethereum } = window;
 window.web3 = new Web3(ethereum);
@@ -12,46 +12,57 @@ const getEthereumContract = async () => {
   const connectedAccount = getGlobalState("connectedAccount");
   if (connectedAccount) {
     const web3 = window.web3;
-    const contractAddress = "0x931d06c73e6636b02b4aada6ddedb712b1fc011e"; // Replace with your contract address
+    const contractAddress = "0x573590f9AfDb7AC685c9ecFFEf276Ac451fF99B8"; // New contract (udpated with campaignId)
     const contract = new web3.eth.Contract(abi.abi, contractAddress);
 
     // Event listener for the 'Sale' event
-    contract.events.Sale({}, (error, event) => {
-      if (error) {
-        console.error("Error in event listener:", error);
-        return;
-      }
+    contract.events
+      .Sale({}, (error, event) => {
+        if (error) {
+          console.error("Error in event listener:", error);
+          return;
+        }
 
-      // const eventData = event.returnValues;
-      // const fundingValue = eventData.funding;
-      // Add your logic to update the off-chain database with the fundingValue
-      // console.log("Sale event received. Funding Value:", fundingValue);
-    })
-    .on("connected", (subscriptionId) => {
-      console.log("Event listener connected, subscription ID:", subscriptionId);
-    })
-    .on("data", (event) => {
-      console.log("New event data:", event);
-      if(event.returnValues.campaignId != ""){ 
-        axios.patch(`http://localhost:5000/campaign/${event.returnValues.campaignId}`, {
-          fundToAdd: event.returnValues.funding
-        })
-        .then((res)=>{
-          window.alert('Fund added successfully')
-          window.location.reload()
-          console.log("New event data:", event);
-        })
-        .catch((err)=>{ 
-          window.alert('Failed to add fund')
-        })
-      }
-    })
-    .on("changed", (event) => {
-      console.log("Event changed:", event);
-    })
-    .on("error", (error) => {
-      console.error("Error in event listener:", error);
-    });
+        // const eventData = event.returnValues;
+        // const fundingValue = eventData.funding;
+        // Add your logic to update the off-chain database with the fundingValue
+        // console.log("Sale event received. Funding Value:", fundingValue);
+      })
+      .on("connected", (subscriptionId) => {
+        console.log(
+          "Event listener connected, subscription ID:",
+          subscriptionId
+        );
+      })
+      .on("data", (event) => {
+        console.log("New event data:", event);
+        const fundToAdd =
+          parseInt(event.returnValues.goesToCampaignFund) / 10 ** 18;
+        if (event.returnValues.campaignId != "") {
+          console.log(fundToAdd);
+          axios
+            .patch(
+              `http://localhost:5000/campaign/${event.returnValues.campaignId}`,
+              {
+                fundToAdd: fundToAdd,
+              }
+            )
+            .then((res) => {
+              window.alert("Fund added successfully");
+              window.location.reload();
+              console.log("New event data:", event);
+            })
+            .catch((err) => {
+              window.alert("Failed to add fund");
+            });
+        }
+      })
+      .on("changed", (event) => {
+        console.log("Event changed:", event);
+      })
+      .on("error", (error) => {
+        console.error("Error in event listener:", error);
+      });
 
     return contract;
   } else {
