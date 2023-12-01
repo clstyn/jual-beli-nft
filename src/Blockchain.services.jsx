@@ -123,6 +123,7 @@ const mintNFT = async ({
   metadataURI,
   campaignName,
   campaignAddress,
+  campaignId,
   price,
   royalty,
 }) => {
@@ -138,6 +139,7 @@ const mintNFT = async ({
         description,
         metadataURI,
         campaignName,
+        campaignId,
         campaignAddress,
         price,
         royalty

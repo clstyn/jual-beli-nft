@@ -37,6 +37,7 @@ export const CreateNFT = () => {
   const [fileUrl, setFileUrl] = useState("");
   const [campaignName, setCampaignName] = useState("");
   const [campaignAddress, setCampaignAddress] = useState("");
+  const [campaignId, setCampaignId] = useState("");
   const [imgBase64, setImgBase64] = useState(null);
 
   const currCampaign = getGlobalState("selectedCampaign");
@@ -45,11 +46,12 @@ export const CreateNFT = () => {
     if (currCampaign) {
       setCampaignName(currCampaign.name);
       setCampaignAddress(currCampaign.address);
+      setCampaignId(currCampaign._id);
     }
   }, [currCampaign]);
 
   useEffect(() => {
-    console.log(campaignName, campaignAddress);
+    console.log(campaignName, campaignAddress, campaignId);
   }, [campaignName, campaignAddress, currCampaign]);
 
   const handleSubmit = async (e) => {
@@ -70,6 +72,7 @@ export const CreateNFT = () => {
         metadataURI,
         campaignName,
         campaignAddress,
+        campaignId,
         price,
         royalty,
       };

@@ -19,6 +19,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         address indexed owner,
         uint256 cost,
         uint256 goesToCampaignFund,
+        string campaignId,
         string metadataURI,
         uint256 timestamp
     );
@@ -28,6 +29,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         address owner;
         address creator;
         address campaignAddress;
+        string campaignId;
         uint256 cost;
         uint256 royaltyPercent;
         string title;
@@ -52,6 +54,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
         string memory description,
         string memory metadataURI,
         string memory campaignName,
+        string memory campaignId,
         address campaignAddress,
         uint256 salesPrice,
         uint256 royaltyPercent
@@ -70,6 +73,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
                 msg.sender,
                 msg.sender,
                 campaignAddress,
+                campaignId,
                 salesPrice,
                 royaltyPercent,
                 title,
@@ -81,7 +85,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
             )
         );
 
-        emit Sale(supply, msg.sender, msg.value, 0, metadataURI, block.timestamp);
+        emit Sale(supply, msg.sender, msg.value, 0, "", metadataURI, block.timestamp);
 
         _safeMint(msg.sender, supply);
         existingURIs[metadataURI] = 1;
@@ -109,6 +113,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
                 msg.sender,
                 minted[id - 1].creator,
                 minted[id - 1].campaignAddress,
+                minted[id - 1].campaignId,
                 msg.value,
                 minted[id - 1].royaltyPercent,
                 minted[id - 1].title,
@@ -125,6 +130,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
             msg.sender,
             msg.value,
             funding,
+            campaignId,
             minted[id - 1].metadataURI,
             block.timestamp
         );
