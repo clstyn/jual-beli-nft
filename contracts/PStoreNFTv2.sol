@@ -130,7 +130,7 @@ contract PStoreNFTv2 is ERC721Enumerable, Ownable {
             msg.sender,
             msg.value,
             funding,
-            campaignId,
+            minted[id - 1].campaignId,
             minted[id - 1].metadataURI,
             block.timestamp
         );
