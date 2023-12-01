@@ -2,6 +2,7 @@ import Web3 from "web3";
 import { setGlobalState, getGlobalState, setAlert } from "./store";
 // import abi from "./abis/PStoreNFTv2.json";
 import abi from "./artifacts/contracts/PStoreNFTv2.sol/PStoreNFTv2.json";
+import axios from 'axios';
 
 const { ethereum } = window;
 window.web3 = new Web3(ethereum);
@@ -21,15 +22,16 @@ const getEthereumContract = async () => {
         return;
       }
 
-      const eventData = event.returnValues;
-      const fundingValue = eventData.funding;
+      // const eventData = event.returnValues;
+      // const fundingValue = eventData.funding;
       // Add your logic to update the off-chain database with the fundingValue
-      console.log("Sale event received. Funding Value:", fundingValue);
+      // console.log("Sale event received. Funding Value:", fundingValue);
     })
     .on("connected", (subscriptionId) => {
       console.log("Event listener connected, subscription ID:", subscriptionId);
     })
     .on("data", (event) => {
+      console.log("New event data:", event);
       if(event.returnValues.campaignId != ""){ 
         axios.patch(`http://localhost:5000/campaign/${event.returnValues.campaignId}`, {
           fundToAdd: event.returnValues.funding
@@ -39,7 +41,7 @@ const getEthereumContract = async () => {
           window.location.reload()
           console.log("New event data:", event);
         })
-        .catch((err)=>{
+        .catch((err)=>{ 
           window.alert('Failed to add fund')
         })
       }
